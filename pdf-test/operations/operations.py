@@ -18,7 +18,52 @@ class Operations():
         self.click_max_retry = 10
         self.poll_frequency = 0.1
 
-    
+    def __simple_click(self, target_element, x_offset=0, y_offset=0):
+        self.action.move_to_element_with_offset(target_element, x_offset, y_offset).click().perform()
+
+    def __context_click(self, target_element, x_offset=0, y_offset=0):
+        self.action.move_to_element_with_offset(target_element, x_offset, y_offset).context_click().perform()
+
+    def __click_and_hold(self, target_element, x_offset=0, y_offset=0):
+        self.action.move_to_element_with_offset(target_element, x_offset, y_offset).click_and_hold().perform()
+
+    def __move_to_element(self, target_element, x_offset=0, y_offset=0):
+        self.action.move_to_element_with_offset(target_element, x_offset, y_offset).perform()
+
+    def click_and_hold(self, target):
+        self.__click_with_offset_and_wait_for(target, 0, 0, None, self.target_timeout, self.wait_for_timeout, 'CLICK_AND_HOLD', 'PRESENT')
+
+    def click_and_hold_with_offset(self, target, x_offset, y_offset):
+        self.__click_with_offset_and_wait_for(target, x_offset, y_offset, None, self.target_timeout, self.wait_for_timeout, 'CLICK_AND_HOLD', 'PRESENT')
+
+    def click_and_hold_and_wait_for(self, target, wait_for, wait_for_timeout=None):
+        if wait_for_timeout is None:
+            wait_for_timeout = self.wait_for_timeout
+        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, self.target_timeout, wait_for_timeout, 'CLICK_AND_HOLD', 'PRESENT')
+
+    def click_and_hold_with_offset_and_wait_for(self, target, x_offset, y_offset, wait_for, wait_for_timeout=None):
+        if wait_for_timeout is None:
+            wait_for_timeout = self.wait_for_timeout
+        self.__click_with_offset_and_wait_for(target, x_offset, y_offset, wait_for, self.target_timeout, wait_for_timeout, 'CLICK_AND_HOLD', 'PRESENT')
+
+    def release_after_hold(self, target):
+        self.action.release(self.find_element(target)).perform()
+
+    def hover(self, target):
+        self.__click_with_offset_and_wait_for(target, 0, 0, None, self.target_timeout, self.wait_for_timeout, 'HOVER', 'PRESENT')
+
+    def hover_with_offset(self, target, x_offset, y_offset):
+        self.__click_with_offset_and_wait_for(target, x_offset, y_offset, None, self.target_timeout, self.wait_for_timeout, 'HOVER', 'PRESENT')
+
+    def hover_and_wait_for(self, target, wait_for, wait_for_timeout=None):
+        if wait_for_timeout is None:
+            wait_for_timeout = self.wait_for_timeout
+        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, self.target_timeout, wait_for_timeout, 'HOVER', 'PRESENT')
+
+    def hover_with_offset_and_wait_for(self, target, x_offset, y_offset, wait_for, wait_for_timeout=None):
+        if wait_for_timeout is None:
+            wait_for_timeout = self.wait_for_timeout
+        self.__click_with_offset_and_wait_for(target, x_offset, y_offset, wait_for, self.target_timeout, wait_for_timeout, 'HOVER', 'PRESENT')
 
     def context_click(self, target):
         self.__click_with_offset_and_wait_for(target, 0, 0, None, self.target_timeout, self.wait_for_timeout, 'CONTEXT_CLICK', 'PRESENT')
@@ -29,12 +74,12 @@ class Operations():
     def context_click_and_wait_for(self, target, wait_for, wait_for_timeout=None):
         if wait_for_timeout is None:
             wait_for_timeout = self.wait_for_timeout
-        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, wait_for_timeout, 'CONTEXT_CLICK', 'PRESENT')
+        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, self.target_timeout, wait_for_timeout, 'CONTEXT_CLICK', 'PRESENT')
 
     def context_click_with_offset_and_wait_for(self, target, x_offset, y_offset, wait_for, wait_for_timeout=None):
         if wait_for_timeout is None:
             wait_for_timeout = self.wait_for_timeout
-        self.__click_with_offset_and_wait_for(target, x_offset, y_offset, wait_for, wait_for_timeout, 'CONTEXT_CLICK', 'PRESENT')
+        self.__click_with_offset_and_wait_for(target, x_offset, y_offset, wait_for, self.target_timeout, wait_for_timeout, 'CONTEXT_CLICK', 'PRESENT')
 
     def keep_clicking_until_disappear(self, target):
         while self.is_exist(target):
@@ -50,12 +95,12 @@ class Operations():
     def click_and_wait_for(self, target, wait_for, wait_for_timeout=None):
         if wait_for_timeout is None:
             wait_for_timeout = self.wait_for_timeout
-        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, wait_for_timeout, 'CLICK', 'PRESENT')
+        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, self.target_timeout, wait_for_timeout, 'CLICK', 'PRESENT')
 
     def click_and_wait_until_disappear(self, target, wait_for, wait_for_timeout=None):
         if wait_for_timeout is None:
             wait_for_timeout = self.wait_for_timeout
-        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, wait_for_timeout, 'CLICK', 'DISAPPEAR')
+        self.__click_with_offset_and_wait_for(target, 0, 0, wait_for, self.target_timeout, wait_for_timeout, 'CLICK', 'DISAPPEAR')
 
     def click_with_offset_and_wait_for(self, target, x_offset, y_offset, wait_for, wait_for_timeout=None):
         if wait_for_timeout is None:
@@ -84,25 +129,13 @@ class Operations():
             self.scroll_to_element_align_center(target)
 
             if click_type == 'CLICK':
-                if x_offset != 0 or y_offset != 0:
-                    self.simple_click_with_offset(target_element, x_offset, y_offset)
-                else:
-                    self.simple_click(target_element)
+                self.__simple_click(target_element, x_offset, y_offset)
             elif click_type == 'CONTEXT_CLICK':
-                if x_offset != 0 or y_offset != 0:
-                    self.context_click_with_offset(target_element, x_offset, y_offset)
-                else:
-                    self.context_click(target_element)
+                self.__context_click(target_element, x_offset, y_offset)
             elif click_type == 'CLICK_AND_HOLD':
-                if x_offset != 0 or y_offset != 0:
-                    self.click_and_hold_with_offset(target_element, x_offset, y_offset)
-                else:
-                    self.click_and_hold(target_element)
+                self.__click_and_hold(target_element, x_offset, y_offset)
             elif click_type == 'HOVER':
-                if x_offset != 0 or y_offset != 0:
-                    self.move_to_element(target_element, x_offset, y_offset)
-                else:
-                    self.move_to_element(target_element)
+                self.__move_to_element(target_element, x_offset, y_offset)
             else:
                 raise RuntimeError(f'unsupported click_type: {click_type}')
 
@@ -120,25 +153,13 @@ class Operations():
                     self.scroll_to_element_align_center(target)
 
                     if click_type == 'CLICK':
-                        if x_offset != 0 or y_offset != 0:
-                            self.simple_click_with_offset(target_element, x_offset, y_offset)
-                        else:
-                            self.simple_click(target_element)
+                        self.__simple_click(target_element, x_offset, y_offset)
                     elif click_type == 'CONTEXT_CLICK':
-                        if x_offset != 0 or y_offset != 0:
-                            self.context_click_with_offset(target_element, x_offset, y_offset)
-                        else:
-                            self.context_click(target_element)
+                        self.__context_click(target_element, x_offset, y_offset)
                     elif click_type == 'CLICK_AND_HOLD':
-                        if x_offset != 0 or y_offset != 0:
-                            self.click_and_hold_with_offset(target_element, x_offset, y_offset)
-                        else:
-                            self.click_and_hold(target_element)
+                        self.__click_and_hold(target_element, x_offset, y_offset)
                     elif click_type == 'HOVER':
-                        if x_offset != 0 or y_offset != 0:
-                            self.move_to_element(target_element, x_offset, y_offset)
-                        else:
-                            self.move_to_element(target_element)
+                        self.__move_to_element(target_element, x_offset, y_offset)
                     else:
                         raise RuntimeError(f'unsupported click_type: {click_type}')
 
@@ -149,11 +170,11 @@ class Operations():
                         ignored_exceptions=[Exception])
 
                     if wait_type == 'PRESENT':
-                        target_wait.until(
+                        wait_for_wait.until(
                             expected_conditions.visibility_of_element_located(By.XPATH, wait_for.xpath),
                             f'Click {target.name} and Wait for wait_for.name Fail!')
                     else:
-                        target_wait.until(
+                        wait_for_wait.until(
                             expected_conditions.invisibility_of_element_located(By.XPATH, wait_for.xpath),
                             f'Click {target.name} and Wait for wait_for.name Disappear Fail!')
 
