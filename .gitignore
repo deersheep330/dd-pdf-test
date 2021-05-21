@@ -1,0 +1,15 @@
+# editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.icloud
+*.iml
+
+# venv
+Scripts
+Lib
+Include
+pyvenv.cfg
