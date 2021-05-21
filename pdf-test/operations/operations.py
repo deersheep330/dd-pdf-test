@@ -1,6 +1,7 @@
 from selenium.webdriver import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
+from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from time import sleep
 
@@ -17,6 +18,8 @@ class Operations():
         self.click_retry_timeout = 3
         self.click_max_retry = 10
         self.poll_frequency = 0.1
+
+        self.default_handle = None
 
     def __simple_click(self, target_element, x_offset=0, y_offset=0):
         self.action.move_to_element_with_offset(target_element, x_offset, y_offset).click().perform()
@@ -251,6 +254,71 @@ class Operations():
             return True
         else:
             return False
+
+    def send_text(self, target, text):
+        self.click(target)
+        element = self.find_element(target)
+        element.clear()
+        element.send_keys(text)
+
+    def drag_and_drop_file(self, target, file_path):
+        self.find_element(target).send_keys(file_path)
+
+    def select_dropdown_option_by_value(self, dropdown, value_to_select):
+        select = Select(self.find_element(dropdown))
+        select.select_by_value(value_to_select)
+
+    def navigate_to(self, url):
+        self.driver.get(url)
+        self.default_handle = self.driver.current_window_handle
+
+    def reload_page(self):
+        self.driver.refresh()
+
+    def is_new_tab_being_opened(self):
+        if len(self.driver.window_handles) > 1:
+            return True
+        else:
+            return False
+
+    def get_current_opened_tabs_count(self):
+        return len(self.driver.window_handles)
+
+    def get_current_opened_tabs(self):
+        return self.driver.window_handles
+
+    def switch_to_first_newly_opened_tab(self):
+        for handle in self.driver.window_handles:
+            if self.default_handle == handle:
+                print(f'switch from {self.default_handle} to handle {handle}')
+                self.driver.switch_to.window(handle)
+                break
+
+    def close_newly_opened_tabs(self):
+        for handle in self.driver.window_handles:
+            if self.default_handle != handle:
+                self.driver.switch_to.window(handle)
+                self.driver.close()
+        self.driver.switch_to.window(self.default_handle)
+
+    def save_current_tab_as_default_handle(self):
+        self.default_handle = self.driver.current_window_handle
+
+    def get_current_tab_handle(self):
+        return self.driver.current_window_handle
+
+    def get_default_tab_handle(self):
+        return self.default_handle
+
+    def click_alert_ok(self):
+        self.driver.switch_to.alert.accept()
+
+    def get_current_url(self):
+        return self.driver.get_url()
+
+
+
+
 
 
 
