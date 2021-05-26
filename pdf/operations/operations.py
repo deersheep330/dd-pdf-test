@@ -5,6 +5,7 @@ from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
 from time import sleep
 
+
 class Operations():
 
     def __init__(self, driver):

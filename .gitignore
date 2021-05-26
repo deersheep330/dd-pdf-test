@@ -13,3 +13,6 @@ Scripts
 Lib
 Include
 pyvenv.cfg
+
+# properties file
+*.ini
