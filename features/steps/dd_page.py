@@ -1,5 +1,4 @@
 from behave import *
-from pdf.pages import dd_page
 
 @then("navigate to dd page")
 def navigate_to_dd_page(context):

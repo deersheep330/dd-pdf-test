@@ -127,7 +127,7 @@ class Operations():
         if wait_for is None:
 
             target_element = target_wait.until(
-                expected_conditions.visibility_of_element_located(By.XPATH, target.xpath),
+                expected_conditions.visibility_of_element_located((By.XPATH, target.xpath)),
                 f'Try to find " + {target.name} + " but not found ! ')
 
             self.scroll_to_element_align_center(target)
@@ -151,7 +151,7 @@ class Operations():
 
                 try:
                     target_element = target_wait.until(
-                        expected_conditions.visibility_of_element_located(By.XPATH, target.xpath),
+                        expected_conditions.visibility_of_element_located((By.XPATH, target.xpath)),
                         f'Try to find " + {target.name} + " but not found ! ')
 
                     self.scroll_to_element_align_center(target)
@@ -175,11 +175,11 @@ class Operations():
 
                     if wait_type == 'PRESENT':
                         wait_for_wait.until(
-                            expected_conditions.visibility_of_element_located(By.XPATH, wait_for.xpath),
+                            expected_conditions.visibility_of_element_located((By.XPATH, wait_for.xpath)),
                             f'Click {target.name} and Wait for wait_for.name Fail!')
                     else:
                         wait_for_wait.until(
-                            expected_conditions.invisibility_of_element_located(By.XPATH, wait_for.xpath),
+                            expected_conditions.invisibility_of_element_located((By.XPATH, wait_for.xpath)),
                             f'Click {target.name} and Wait for wait_for.name Disappear Fail!')
 
                     success = True
@@ -206,7 +206,7 @@ class Operations():
             ignored_exceptions=[Exception])
 
         wait_for_wait.until(
-            expected_conditions.visibility_of_element_located(By.XPATH, wait_for.xpath),
+            expected_conditions.visibility_of_element_located((By.XPATH, wait_for.xpath)),
             f'Element " + {wait_for.name} + " not found after timeout {wait_for_timeout} s.')
 
         self.scroll_to_element_align_center(wait_for)
@@ -243,7 +243,7 @@ class Operations():
             poll_frequency=self.poll_frequency,
             ignored_exceptions=[Exception])
         try:
-            target_wait.until(expected_conditions.visibility_of_element_located(By.XPATH, target.xpath))
+            target_wait.until(expected_conditions.visibility_of_element_located((By.XPATH, target.xpath)))
         except Exception:
             pass
         finally:
@@ -316,6 +316,9 @@ class Operations():
 
     def get_current_url(self):
         return self.driver.get_url()
+
+    def quit(self):
+        self.driver.quit()
 
 
 

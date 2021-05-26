@@ -18,6 +18,7 @@ class MainPage(VirtualPage):
 
     def navigate(self):
         self.op.navigate_to(self.url)
+        self.op.wait_for(self.get_element("PatentSearchLogo"))
 
     def is_logged_in(self):
         if self.op.is_exist(self.get_element("UserIcon")):

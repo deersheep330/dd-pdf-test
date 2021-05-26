@@ -1,11 +1,10 @@
 from behave import *
-from pdf.pages import main_page
 
 @given("on ps page")
 def on_ps_page(context):
-    pass
+    context.ps_page.navigate()
 
 @then("login")
 def login(context):
-    pass
+    context.ps_page.login_as_unlimited_user()
 

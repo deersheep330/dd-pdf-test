@@ -8,3 +8,6 @@ class DdPage(VirtualPage):
 
         super().__init__(driver)
         self.url = url
+
+    def quit(self):
+        self.op.quit()
