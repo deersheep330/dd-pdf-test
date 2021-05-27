@@ -25,7 +25,6 @@ class ChromeDriver():
         caps['goog:loggingPrefs'] = {'performance': 'ALL'}
 
         self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), desired_capabilities=caps)
-        #self.driver = webdriver.Chrome(executable_path=ChromeDriverManager().install(), options=options)
 
     def get_driver(self):
         return self.driver

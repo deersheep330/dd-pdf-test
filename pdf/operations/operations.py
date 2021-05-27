@@ -1,3 +1,5 @@
+import json
+
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
@@ -319,6 +321,30 @@ class Operations():
 
     def sleep(self, sec):
         _sleep(sec)
+
+    def wait_for_response(self, keyword, wait_for_timeout=60):
+
+        sleep_time = 3
+        retry = 0
+        max_retry = wait_for_timeout / sleep_time
+        while retry < max_retry:
+            for entry in self.driver.get_log('performance'):
+                message = json.loads(entry['message'])
+                if 'message' in message:
+                    _message = message['message']
+                    if 'params' in _message:
+                        params = _message['params']
+                        if 'response' in params:
+                            response = params['response']
+                            if 'url' in response:
+                                url = response['url']
+                                print(f'{url}')
+                                if keyword in url:
+                                    print(f'==> get response for {url}')
+                                    return
+            _sleep(sleep_time)
+            retry += 1
+        raise RuntimeError(f'wait for response {keyword} timeout after {wait_for_timeout} sec')
 
 
 
