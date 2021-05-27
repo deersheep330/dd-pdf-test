@@ -1,3 +1,5 @@
+import os
+
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -8,8 +10,13 @@ class ChromeDriver():
 
         options = webdriver.ChromeOptions()
 
-        # prevent notification
-        prefs = {'profile.default_content_setting_values.notifications': 2}
+        # prevent notification & set download path
+        download_path = os.path.join(os.getcwd(), 'downloads')
+        prefs = {
+            'profile.default_content_setting_values.notifications': 2,
+            'download.default_directory': download_path
+        }
+
         options.add_experimental_option('prefs', prefs)
 
         # headless

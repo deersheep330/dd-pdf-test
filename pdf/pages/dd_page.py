@@ -88,7 +88,8 @@ class DDPage(VirtualPage):
     def download_pdf(self):
         self.op.click_and_wait_for(self.get_element("DownloadPdf"), self.get_element("DownloadPdfModal"))
         self.op.click(self.get_element("DownloadPdfConfirm"))
-        self.op.wait_for_response('/dd-api/export/downloadFile')
+        self.op.wait_for_response('/dd-api/export/downloadFile', wait_for_timeout=120)
+        self.op.sleep(60)
 
     def quit(self):
         self.op.quit()
