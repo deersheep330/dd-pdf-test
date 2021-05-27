@@ -52,7 +52,7 @@ class DDPage(VirtualPage):
 
         self.add_element("StartAnalysis", "//*[@i18n-txt='due.button.startanalytics']")
 
-        self.add_element("DownloadPdf", "//*[contains(@class, 'download-CRIF')]//*[name()='svg' and contains(@class, 'fa-file-download')]")
+        self.add_element("DownloadPdf", "//*[contains(@i18n-txt, 'due.page.downloadreport')]//*[name()='svg' and contains(@class, 'fa-file-download')]")
         self.add_element("DownloadPdfModal", "//*[contains(text(), 'Download Report')]")
         self.add_element("DownloadPdfConfirm", "//*[@i18n-txt='due.button.confirm']")
 
@@ -86,7 +86,7 @@ class DDPage(VirtualPage):
         self.op.click_and_wait_for(self.get_element("StartAnalysis"), self.get_element("CSTab"))
 
     def download_pdf(self):
-        self.op.click_and_wait_for(self.get_element("DownloadPdf"), self.add_element("DownloadPdfModal"))
+        self.op.click_and_wait_for(self.get_element("DownloadPdf"), self.get_element("DownloadPdfModal"))
         self.op.click(self.get_element("DownloadPdfConfirm"))
         self.op.sleep(10)
 

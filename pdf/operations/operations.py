@@ -174,11 +174,11 @@ class Operations():
                     if wait_type == 'PRESENT':
                         wait_for_wait.until(
                             expected_conditions.visibility_of_element_located((By.XPATH, wait_for.xpath)),
-                            f'Click {target.name} and Wait for wait_for.name Fail!')
+                            f'Click {target.name} and Wait for {wait_for.name} Fail!')
                     else:
                         wait_for_wait.until(
                             expected_conditions.invisibility_of_element_located((By.XPATH, wait_for.xpath)),
-                            f'Click {target.name} and Wait for wait_for.name Disappear Fail!')
+                            f'Click {target.name} and Wait for {wait_for.name} Disappear Fail!')
 
                     success = True
                 except Exception as e:
