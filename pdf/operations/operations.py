@@ -1,4 +1,4 @@
-from selenium.webdriver import ActionChains
+from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
@@ -23,7 +23,8 @@ class Operations():
         self.default_handle = None
 
     def __simple_click(self, target_element, x_offset=0, y_offset=0):
-        self.action.move_to_element_with_offset(target_element, x_offset, y_offset).click().perform()
+        target_element.click();
+        #self.action.move_to_element_with_offset(target_element, x_offset, y_offset).click().perform()
 
     def __context_click(self, target_element, x_offset=0, y_offset=0):
         self.action.move_to_element_with_offset(target_element, x_offset, y_offset).context_click().perform()
@@ -125,13 +126,11 @@ class Operations():
             ignored_exceptions=[Exception])
 
         if wait_for is None:
-            print('a')
             target_element = target_wait.until(
                 expected_conditions.visibility_of_element_located((By.XPATH, target.xpath)),
                 f'Try to find " + {target.name} + " but not found ! ')
 
             self.scroll_to_element_align_center(target)
-            print('b')
             if click_type == 'CLICK':
                 self.__simple_click(target_element, x_offset, y_offset)
             elif click_type == 'CONTEXT_CLICK':
@@ -142,7 +141,6 @@ class Operations():
                 self.__move_to_element(target_element, x_offset, y_offset)
             else:
                 raise RuntimeError(f'unsupported click_type: {click_type}')
-            print('c')
         else:
 
             success = False
@@ -257,7 +255,7 @@ class Operations():
             return False
 
     def send_text(self, target, text):
-        element = self.find_element(target)
+        element = self.driver.find_element_by_xpath(target.xpath)
         element.clear()
         element.send_keys(text)
 

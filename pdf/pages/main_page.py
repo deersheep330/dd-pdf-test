@@ -33,7 +33,7 @@ class MainPage(VirtualPage):
             self.op.click_and_wait_for(self.get_element("LoginButton"), self.get_element("LoginEmail"))
             self.op.send_text(self.get_element("LoginEmail"), account)
             self.op.send_text(self.get_element("LoginPassword"), password)
-            self.op.click_and_wait_for(self.get_element("LoginSubmit"), self.get_element("UserIcon"))
+            self.op.click(self.get_element("LoginSubmit"))
             self.op.wait_for(self.get_element("UserIcon"))
 
     def login_as_unlimited_user(self):

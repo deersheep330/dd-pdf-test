@@ -60,7 +60,7 @@ class DDPage(VirtualPage):
         self.op.navigate_to(self.url)
         self.op.wait_for(self.get_element("DDLogo"))
         # wait for being redirected to history tab
-        self.op.sleep(3)
+        self.op.sleep(5)
 
     def change_lang_to_english(self):
         self.op.click_and_wait_for(self.get_element("ChangeLang"), self.get_element("EnglishLang"))
@@ -73,7 +73,7 @@ class DDPage(VirtualPage):
         self.op.click_and_wait_for(self.get_element("PatentNumberTab"), self.get_element("UploadFileTab"))
         self.op.click_and_wait_for(self.get_element("UploadFileTab"), self.get_element("UploadFileHint"))
 
-        file_path = os.path.join(os.getcwd(), "import_smoke.csv")
+        file_path = os.path.join(os.getcwd(), "files", "import_smoke.csv")
         self.op.send_text(self.get_element("UploadFileDragAndDrop"), file_path)
         self.op.click(self.get_element("UploadFileConfirm"))
 
