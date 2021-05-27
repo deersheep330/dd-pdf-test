@@ -15,3 +15,4 @@ def start_analysis(context):
 @then("download pdf")
 def download_pdf(context):
     context.dd_page.download_pdf()
+    context.dd_page.get_downloaded_pdf()

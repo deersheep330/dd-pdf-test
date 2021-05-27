@@ -106,7 +106,7 @@ class DDPage(VirtualPage):
 
     def get_downloaded_pdf(self):
         download_path = os.path.join(os.getcwd(), 'downloads')
-        return get_latest_file_from_folder(download_path)
+        print(get_latest_file_from_folder(download_path))
 
     def parse_pdf(self, file_path):
         pass

@@ -15,7 +15,7 @@ def read_variable_from_config(var):
 
 
 def get_latest_file_from_folder(folder):
-    list_of_files = glob.glob(folder)
+    list_of_files = glob.glob(os.path.join(folder, '*'))
     latest_file = max(list_of_files, key=os.path.getctime)
     print(f'get latest file: {latest_file}')
     return latest_file
