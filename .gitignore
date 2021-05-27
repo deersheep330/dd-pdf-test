@@ -15,7 +15,7 @@ Include
 pyvenv.cfg
 
 # properties file
-*.ini
+variables.ini
 
 # cache
 __pycache__
