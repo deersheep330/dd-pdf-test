@@ -1,5 +1,6 @@
 import os
 from pdf.utils import get_latest_file_from_folder, get_file_count_from_folder
+from pdf.utils import parse_pdf as _parse_pdf
 from pdf.virtual_page import VirtualPage
 
 
@@ -55,6 +56,8 @@ class DDPage(VirtualPage):
         self.add_element("DownloadPdfModal", "//*[contains(text(), 'Download Report')]")
         self.add_element("DownloadPdfConfirm", "//*[@i18n-txt='due.button.confirm']")
 
+        self.pdf_content = ''
+
     def navigate(self):
         self.op.navigate_to(self.url)
         self.op.wait_for(self.get_element("DDLogo"))
@@ -90,7 +93,7 @@ class DDPage(VirtualPage):
 
         self.op.click_and_wait_for(self.get_element("DownloadPdf"), self.get_element("DownloadPdfModal"))
         self.op.click(self.get_element("DownloadPdfConfirm"))
-        self.op.wait_for_response('/dd-api/export/downloadFile', wait_for_timeout=120)
+        self.op.wait_for_response('/dd-api/export/downloadFile', wait_for_timeout=180)
 
         retry = 0
         max_retry = 20
@@ -106,10 +109,11 @@ class DDPage(VirtualPage):
 
     def get_downloaded_pdf(self):
         download_path = os.path.join(os.getcwd(), 'downloads')
-        print(get_latest_file_from_folder(download_path))
+        return get_latest_file_from_folder(download_path)
 
-    def parse_pdf(self, file_path):
-        pass
+    def parse_pdf(self, pdf):
+        self.pdf_content = _parse_pdf(pdf)
+        print(self.pdf_content)
 
     def quit(self):
         self.op.quit()

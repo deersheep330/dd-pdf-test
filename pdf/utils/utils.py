@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 import glob
 import os
+from tika import parser
 
 
 def read_variable_from_config(var):
@@ -23,3 +24,10 @@ def get_latest_file_from_folder(folder):
 
 def get_file_count_from_folder(folder):
     return len([name for name in os.listdir(folder) if os.path.isfile(os.path.join(folder, name))])
+
+
+def parse_pdf(pdf):
+    parsed_pdf = parser.from_file(pdf)
+    data = parsed_pdf['content']
+    print(data)
+
