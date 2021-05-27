@@ -1,7 +1,7 @@
 import os
 from configparser import ConfigParser
 from pdf.webdriver import ChromeDriver
-from pdf.pages import MainPage, DdPage
+from pdf.pages import MainPage, DDPage
 
 
 def before_all(context):
@@ -19,7 +19,7 @@ def before_all(context):
     dd_url = 'https://stage.patentcloud.com/dd'
 
     context.ps_page = MainPage(driver, main_url)
-    context.dd_page = DdPage(driver, dd_url)
+    context.dd_page = DDPage(driver, dd_url)
 
 
 def after_all(context):

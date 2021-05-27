@@ -3,7 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.support.wait import WebDriverWait
-from time import sleep
+from time import sleep as _sleep
 
 
 class Operations():
@@ -88,7 +88,7 @@ class Operations():
     def keep_clicking_until_disappear(self, target):
         while self.is_exist(target):
             self.click(target)
-            sleep(2)
+            _sleep(2)
 
     def click(self, target):
         self.__click_with_offset_and_wait_for(target, 0, 0, None, self.target_timeout, self.wait_for_timeout, 'CLICK', 'PRESENT')
@@ -125,13 +125,13 @@ class Operations():
             ignored_exceptions=[Exception])
 
         if wait_for is None:
-
+            print('a')
             target_element = target_wait.until(
                 expected_conditions.visibility_of_element_located((By.XPATH, target.xpath)),
                 f'Try to find " + {target.name} + " but not found ! ')
 
             self.scroll_to_element_align_center(target)
-
+            print('b')
             if click_type == 'CLICK':
                 self.__simple_click(target_element, x_offset, y_offset)
             elif click_type == 'CONTEXT_CLICK':
@@ -142,7 +142,7 @@ class Operations():
                 self.__move_to_element(target_element, x_offset, y_offset)
             else:
                 raise RuntimeError(f'unsupported click_type: {click_type}')
-
+            print('c')
         else:
 
             success = False
@@ -257,7 +257,6 @@ class Operations():
             return False
 
     def send_text(self, target, text):
-        self.click(target)
         element = self.find_element(target)
         element.clear()
         element.send_keys(text)
@@ -319,6 +318,9 @@ class Operations():
 
     def quit(self):
         self.driver.quit()
+
+    def sleep(self, sec):
+        _sleep(sec)
 
 
 
