@@ -266,6 +266,29 @@ class DDPage(VirtualPage):
                 retry += 1
         raise RuntimeError('download pdf failed')
 
+    def download_customized_pdf(self, chart):
+        download_path = os.path.join(os.getcwd(), 'downloads')
+        orig_file_count = get_file_count_from_folder(download_path)
+
+        self.op.click_and_wait_for(self.get_element("DownloadPdf"), self.get_element("DownloadPdfModal"))
+        self.op.click_and_wait_for(self.get_element("DownloadPdfCustomize"), self.get_element("DownloadPdfClear"))
+        self.op.click(self.get_element("DownloadPdfClear"))
+        self.op.click(self.get_element("DownloadPdf" + chart))
+        self.op.click(self.get_element("DownloadPdfConfirm"))
+        self.op.wait_for_response('/dd-api/export/downloadFile', wait_for_timeout=180)
+
+        retry = 0
+        max_retry = 20
+        sleep_time = 3
+        while retry < max_retry:
+            current_file_count = get_file_count_from_folder(download_path)
+            if current_file_count > orig_file_count:
+                return
+            else:
+                self.op.sleep(sleep_time)
+                retry += 1
+        raise RuntimeError('download pdf failed')
+
     def get_downloaded_pdf(self):
         download_path = os.path.join(os.getcwd(), 'downloads')
         return get_latest_file_from_folder(download_path)
