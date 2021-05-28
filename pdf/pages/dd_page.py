@@ -275,9 +275,79 @@ class DDPage(VirtualPage):
         print(self.pdf_content)
 
     def validate_pdf(self):
+        pass
 
+    def wait_for_CS1(self):
+        self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
+        self.op.wait_for(self.get_element("CS1"))
 
+    def wait_for_CS2(self):
+        self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
+        self.op.wait_for(self.get_element("CS2"))
 
+    def wait_for_CS3(self):
+        self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
+        self.op.wait_for(self.get_element("CS3"))
+
+    def wait_for_TECH1(self):
+        self.op.click_and_wait_for(self.get_element("TECHTab"), self.get_element("TECH1Title"))
+        self.op.wait_for(self.get_element("TECH1"))
+
+    def wait_for_TECH2(self):
+        self.op.click_and_wait_for(self.get_element("TECHTab"), self.get_element("TECH1Title"))
+        self.op.wait_for(self.get_element("TECH2"))
+
+    def wait_for_OI1(self):
+        self.op.click_and_wait_for(self.get_element("OITab"), self.get_element("OI1Title"))
+        self.op.wait_for(self.get_element("OI1"))
+
+    def wait_for_OI2(self):
+        self.op.click_and_wait_for(self.get_element("OITab"), self.get_element("OI1Title"))
+        self.op.wait_for(self.get_element("OI2"))
+
+    def wait_for_OI3(self):
+        self.op.click_and_wait_for(self.get_element("OITab"), self.get_element("OI1Title"))
+        self.op.wait_for(self.get_element("OI3"))
+
+    def wait_for_HH1(self):
+        self.op.click_and_wait_for(self.get_element("HHTab"), self.get_element("HH2Title"))
+        self.op.wait_for(self.get_element("HH1"))
+
+    def wait_for_HH2(self):
+        self.op.click_and_wait_for(self.get_element("HHTab"), self.get_element("HH2Title"))
+        self.op.wait_for(self.get_element("HH2"))
+
+    def wait_for_QV1(self):
+        self.op.click_and_wait_for(self.get_element("QVTab"), self.get_element("QV2Title"))
+        self.op.wait_for(self.get_element("QV1"))
+
+    def wait_for_QV2(self):
+        self.op.click_and_wait_for(self.get_element("QVTab"), self.get_element("QV2Title"))
+        self.op.wait_for(self.get_element("QV2"))
+
+    def wait_for_QV3(self):
+        self.op.click_and_wait_for(self.get_element("QVTab"), self.get_element("QV2Title"))
+        self.op.wait_for(self.get_element("QV3"))
+
+    def wait_for_QH1(self):
+        self.op.click_and_wait_for(self.get_element("QHTab"), self.get_element("QH2Title"))
+        self.op.wait_for(self.get_element("QH1"))
+
+    def wait_for_QH2(self):
+        self.op.click_and_wait_for(self.get_element("QHTab"), self.get_element("QH2Title"))
+        self.op.wait_for(self.get_element("QH2"))
+
+    def wait_for_VH1(self):
+        self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
+        self.op.wait_for(self.get_element("VH1"))
+
+    def wait_for_VH2(self):
+        self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
+        self.op.wait_for(self.get_element("VH2"))
+
+    def wait_for_VH3(self):
+        self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
+        self.op.wait_for(self.get_element("VH3"))
 
     def quit(self):
         self.op.quit()
