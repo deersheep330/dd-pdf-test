@@ -55,6 +55,37 @@ class DDPage(VirtualPage):
         self.add_element("DownloadPdf", "//*[contains(@i18n-txt, 'due.page.downloadreport')]//*[name()='svg' and contains(@class, 'fa-file-download')]")
         self.add_element("DownloadPdfModal", "//*[contains(text(), 'Download Report')]")
         self.add_element("DownloadPdfConfirm", "//*[@i18n-txt='due.button.confirm']")
+        self.add_element("DownloadPdfCustomize", "//*[contains(text(), 'Customize')]")
+        self.add_element("DownloadPdfClear", "//*[@i18n-txt='due.chart.clear']")
+
+        self.add_element("DownloadPdfCS1", "//*[@for='CS1']")
+        self.add_element("DownloadPdfCS2", "//*[@for='CS2']")
+        self.add_element("DownloadPdfCS3", "//*[@for='CS3']")
+
+        self.add_element("DownloadPdfTECH1", "//*[@for='TECH1']")
+        self.add_element("DownloadPdfTECH2", "//*[@for='TECH2']")
+
+        self.add_element("DownloadPdfOI1", "//*[@for='OI1']")
+        self.add_element("DownloadPdfOI2_Assignees", "//*[@for='OI2_ASSIGNEES']")
+        self.add_element("DownloadPdfOI2_Inventors", "//*[@for='OI2_INVENTORS']")
+        self.add_element("DownloadPdfOI3", "//*[@for='OI3']")
+
+        self.add_element("DownloadPdfHH1", "//*[@for='HH1_TRANSACTED']")
+        self.add_element("DownloadPdfHH2", "//*[@for='HH3']")
+
+        self.add_element("DownloadPdfQV1", "//*[@for='QV1']")
+        self.add_element("DownloadPdfQV2", "//*[@for='QV2']")
+        self.add_element("DownloadPdfQV3", "//*[@for='QV3_DEFAULT_TOP_1']")
+
+        self.add_element("DownloadPdfQH1", "//*[@for='QH1']")
+        self.add_element("DownloadPdfQH2", "//*[@for='QH2']")
+
+        self.add_element("DownloadPdfVH1_Quantity", "//*[@for='VH2_QUANTITY']")
+        self.add_element("DownloadPdfVH1_Percentage", "//*[@for='VH2_PERCENTAGE']")
+        self.add_element("DownloadPdfVH2", "//*[@for='VH1']")
+
+        self.add_element("DownloadPdfVH3_Potential", "//*[@for='VH3_POTENTIAL']")
+        self.add_element("DownloadPdfVH3_Family", "//*[@for='VH3_FAMILYID']")
 
         self.pdf_content = ''
         self.pdf_fields = {
