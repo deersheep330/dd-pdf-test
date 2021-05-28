@@ -217,6 +217,27 @@ class DDPage(VirtualPage):
             'summary': 'Summary'
         }
 
+        self.defaults = {
+            'cs_1': 229,
+            'cs_2': 43,
+            'cs_3': 26,
+            'tech_1': 157,
+            'tech_2': 195,
+            'oi_1': 79,
+            'oi_2': 41,
+            'oi_3': 197,
+            'hh_1': 22,
+            'hh_2': 69,
+            'qv_1': 40,
+            'qv_2': 42,
+            'qv_3': 42,
+            'qh_1': 15,
+            'qh_2': 24,
+            'vh_1': 267,
+            'vh_2': 267,
+            'vh_3': 267
+        }
+
     def navigate(self):
         self.op.navigate_to(self.url)
         self.op.wait_for(self.get_element("DDLogo"))
