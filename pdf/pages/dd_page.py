@@ -52,6 +52,58 @@ class DDPage(VirtualPage):
 
         self.add_element("StartAnalysis", "//*[@i18n-txt='due.button.startanalytics']")
 
+        # filter dropdown
+        self.add_element("1stChartLegalStatusDropdown", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/button")
+        self.add_element("1stChartLegalStatusSelectAll", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/li[1]/form//*[contains(text(), 'Select All')]")
+        self.add_element("1stChartLegalStatusActive", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/li[1]/form//*[contains(text(), 'Active')]")
+        self.add_element("1stChartLegalStatusPending", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/li[1]/form//*[contains(text(), 'Pending')]")
+        self.add_element("1stChartLegalStatusInactive", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/li[1]/form//*[contains(text(), 'Inactive')]")
+        self.add_element("1stChartLegalStatusSubmit", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/button")
+
+        self.add_element("2ndChartLegalStatusDropdown", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[2]/button")
+        self.add_element("2ndChartLegalStatusSelectAll", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[2]/ul/div/li[1]/form//*[contains(text(), 'Select All')]")
+        self.add_element("2ndChartLegalStatusActive", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[2]/ul/div/li[1]/form//*[contains(text(), 'Active')]")
+        self.add_element("2ndChartLegalStatusPending", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[2]/ul/div/li[1]/form//*[contains(text(), 'Pending')]")
+        self.add_element("2ndChartLegalStatusInactive", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[2]/ul/div/li[1]/form//*[contains(text(), 'Inactive')]")
+        self.add_element("2ndChartLegalStatusSubmit", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[2]/ul/div/button")
+
+        self.add_element("3rdChartLegalStatusDropdown", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[3]/button")
+        self.add_element("3rdChartLegalStatusSelectAll", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[3]/ul/div/li[1]/form//*[contains(text(), 'Select All')]")
+        self.add_element("3rdChartLegalStatusActive", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[3]/ul/div/li[1]/form//*[contains(text(), 'Active')]")
+        self.add_element("3rdChartLegalStatusPending", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[3]/ul/div/li[1]/form//*[contains(text(), 'Pending')]")
+        self.add_element("3rdChartLegalStatusInactive", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[3]/ul/div/li[1]/form//*[contains(text(), 'Inactive')]")
+        self.add_element("3rdChartLegalStatusSubmit", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[3]/ul/div/button")
+
+        # filter options
+        self.add_element("1stChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[1]")
+        self.add_element("2ndChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[2]")
+        self.add_element("3rdChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[3]")
+        self.add_element("FilterSubmit", "//button[@i18n-txt='due.button.submit']")
+        self.add_element("FilterClear", "//*[contains(@class, 'show')]//*[contains(text(), 'lear')]")
+        self.add_element("FilterCN", "//*[@i18n-txt='name.cn']")
+
+        # count by
+        self.add_element("1stChartCountByButton", "(//div[contains(@i18n-txt, 'due.unit.')])[1]")
+        self.add_element("2ndChartCountByButton", "(//div[contains(@i18n-txt, 'due.unit.')])[2]")
+        self.add_element("3rdChartCountByButton", "(//div[contains(@i18n-txt, 'due.unit.')])[3]")
+        self.add_element("1stChartCountByFamily", "(//button/span[@i18n-txt='due.unit.simplefamily'])[1]")
+        self.add_element("2ndChartCountByFamily", "(//button/span[@i18n-txt='due.unit.simplefamily'])[2]")
+        self.add_element("3rdChartCountByFamily", "(//button/span[@i18n-txt='due.unit.simplefamily'])[3]")
+
+        # select data
+        self.add_element("TECH1SelectData", "//div[contains(@class,'technical-field')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("TECH2SelectData", "//div[contains(@class,'stream-graph')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("OI2SelectData", "//div[contains(@class, 'spark-line-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("OI2SelectDataInventors", "//span[@i18n-txt='due.chart.inventor']")
+        self.add_element("OI2SelectDataApplicants", "//span[@i18n-txt='due.chart.applicant']")
+        self.add_element("OI3SelectData", "//div[contains(@class,'owner-inventor-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("HH1SelectData", "//*[contains(@class, 'fa-cog')]")
+        self.add_element("VH1SelectData", "//div[contains(@class,'invest-target-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("VH2SelectData", "//div[contains(@class,'spark-line-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("VH3FamilyIdSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[1]")
+        self.add_element(("VH3PotentialTargetSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[2]")
+
+        # download pdf
         self.add_element("DownloadPdf", "//*[contains(@i18n-txt, 'due.page.downloadreport')]//*[name()='svg' and contains(@class, 'fa-file-download')]")
         self.add_element("DownloadPdfModal", "//*[contains(text(), 'Download Report')]")
         self.add_element("DownloadPdfConfirm", "//*[@i18n-txt='due.button.confirm']")
