@@ -57,6 +57,45 @@ class DDPage(VirtualPage):
         self.add_element("DownloadPdfConfirm", "//*[@i18n-txt='due.button.confirm']")
 
         self.pdf_content = ''
+        self.pdf_fields = {
+            'cs': 'Coverage and Status',
+            'cs_1': 'Global Coverage',
+            'cs_2': 'Remaining Life',
+            'cs_3': 'Pending Patents',
+
+            'tech': 'Technologies',
+            'tech_1': 'Technical Fields',
+            'tech_2': 'Technology Timeline',
+
+            'oi': 'Owner/Inventor/Applicant',
+            'oi_1': 'Co-Ownerships and Co-Applicants',
+            'oi_2_assignees': 'Top 10 Assignees',
+            'oi_2_inventors': 'Top 10 Inventors',
+            'oi_3': 'Current Patent Owners',
+
+            'hh': 'Historical Highlights',
+            'hh_1': 'Transacted Patents',
+            'hh_2': 'Litigated Patents',
+
+            'qv': 'Quality and Value',
+            'qv_1': 'High-Value Patent Families',
+            'qv_2': 'Quality of High-Value Patents',
+            'qv_3': 'Peer Comparison in the Same Field',
+
+            'qh': 'Quality Highlights',
+            'qh_1': 'Abandoned and Revoked Family Members',
+            'qh_2': 'Eligibility and Novelty Issues',
+
+            'vh': 'Value Highlights',
+            'vh_1': 'Potential Targets of the Portfolio',
+            'vh_2': 'Filing Dates of Potential Targets in the Relevant Art',
+            'vh_3': 'Patents Against the Potential Targets',
+
+            'families': '# of Patent Families in the chart',
+            'applications': '# of Applications in the chart',
+
+            'summary': 'Summary'
+        }
 
     def navigate(self):
         self.op.navigate_to(self.url)
@@ -114,6 +153,11 @@ class DDPage(VirtualPage):
     def parse_pdf(self, pdf):
         self.pdf_content = _parse_pdf(pdf)
         print(self.pdf_content)
+
+    def validate_pdf(self):
+
+
+
 
     def quit(self):
         self.op.quit()
