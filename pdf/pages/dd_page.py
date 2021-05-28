@@ -52,6 +52,43 @@ class DDPage(VirtualPage):
 
         self.add_element("StartAnalysis", "//*[@i18n-txt='due.button.startanalytics']")
 
+        # tabs
+        self.add_element("CSTab", "//span[@i18n-txt='due.page.coveragestatus']")
+        self.add_element("TECHTab", "//span[@i18n-txt='due.page.technology']")
+        self.add_element("OITab", "//span[@i18n-txt='due.page.inventorapplicant']")
+        self.add_element("HHTab", "//span[@i18n-txt='due.page.historicalhighlight']")
+        self.add_element("QVTab", "//span[@i18n-txt='due.page.qualityvalue']")
+        self.add_element("QHTab", "//span[@i18n-txt='due.page.qualityhighlight']")
+        self.add_element("VHTab", "//span[@i18n-txt='due.page.valuehighlight']")
+
+        self.add_element("CS1Title", "//span[@i18n-txt='due.chartname.coverage' or @i18n-txt='due.report.title.cs1']")
+        self.add_element("TECH1Title", "//span[@i18n-txt='due.chartname.technicalfield' or @i18n-txt='due.report.title.te1']")
+        self.add_element("OI1Title", "//span[@i18n-txt='due.chartname.cownership']")
+        self.add_element("HH2Title", "//span[@i18n-txt='due.chartname.validity']")
+        self.add_element("QV2Title", "//span[@i18n-txt='due.chartname.valuequality']")
+        self.add_element("QH2Title", "//span[@i18n-txt='due.chartname.eligibility']")
+        self.add_element("VH1Title", "//span[@i18n-txt='due.chartname.potentialtarget']")
+
+        # charts
+        self.add_element("CS1", "//div[@id='custMap']")
+        self.add_element("CS2", "//div[@id='stackedArea']")
+        self.add_element("CS3", "//div[@id='StackedChart']")
+        self.add_element("TECH1", "//div[@id='technical-field']")
+        self.add_element("TECH2", "//div[contains(@class, 'stream-graph')]")
+        self.add_element("OI1", "//div[contains(@class, 'ownership-issue')]")
+        self.add_element("OI2", "//div[contains(@class, 'spark-line-chart')]")
+        self.add_element("OI3", "//div[contains(@class, 'owner-inventor-chart')]")
+        self.add_element("HH1", "//div[@id='hh_1']")
+        self.add_element("HH2", "//div[@id='MultiColorBarChart']")
+        self.add_element("QV1", "//div[contains(@class, 'family-size-bubble-chart')]")
+        self.add_element("QV2", "//div[@id='bubbleChart']")
+        self.add_element("QV3", "//div[contains(@id, 'negitiveChart')]")
+        self.add_element("QH1", "//div[@id='QH-1-chart']")
+        self.add_element("QH2", "//div[@id='QH-2-chart']")
+        self.add_element("VH1", "//div[contains(@class, 'invest-target-chart')]")
+        self.add_element("VH2", "//div[contains(@class, 'spark-line-chart')]")
+        self.add_element("VH3", "//div[contains(@class, 'sankey-chart')]")
+
         # filter dropdown
         self.add_element("1stChartLegalStatusDropdown", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/button")
         self.add_element("1stChartLegalStatusSelectAll", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/li[1]/form//*[contains(text(), 'Select All')]")
@@ -101,7 +138,7 @@ class DDPage(VirtualPage):
         self.add_element("VH1SelectData", "//div[contains(@class,'invest-target-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
         self.add_element("VH2SelectData", "//div[contains(@class,'spark-line-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
         self.add_element("VH3FamilyIdSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[1]")
-        self.add_element(("VH3PotentialTargetSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[2]")
+        self.add_element("VH3PotentialTargetSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[2]")
 
         # download pdf
         self.add_element("DownloadPdf", "//*[contains(@i18n-txt, 'due.page.downloadreport')]//*[name()='svg' and contains(@class, 'fa-file-download')]")
