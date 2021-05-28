@@ -372,5 +372,129 @@ class DDPage(VirtualPage):
         self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
         self.op.wait_for(self.get_element("VH3"))
 
+    def change_CS1_filter(self):
+        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
+        self.op.click(self.get_element("1stChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("1stChartLegalStatusPending"))
+        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.wait_for_CS1()
+
+    def change_CS2_filter(self):
+        self.op.click(self.get_element("2ndChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_CS2()
+
+    def change_CS3_filter(self):
+        self.op.click(self.get_element("3rdChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_CS3()
+
+    def change_TECH1_filter(self):
+        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
+        self.op.click(self.get_element("1stChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("1stChartLegalStatusPending"))
+        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.wait_for_TECH1()
+
+    def change_TECH2_filter(self):
+        self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
+        self.op.click(self.get_element("2ndChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("2ndChartLegalStatusPending"))
+        self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
+        self.wait_for_TECH2()
+
+    def change_OI1_filter(self):
+        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
+        self.op.click(self.get_element("1stChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("1stChartLegalStatusPending"))
+        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.wait_for_OI1()
+
+    def change_OI2_filter(self):
+        self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
+        self.op.click(self.get_element("2ndChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("2ndChartLegalStatusPending"))
+        self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
+        self.wait_for_OI2()
+
+    def change_OI3_filter(self):
+        self.op.click(self.get_element("3rdChartLegalStatusDropdown"))
+        self.op.click(self.get_element("3rdChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("3rdChartLegalStatusPending"))
+        self.op.click(self.get_element("3rdChartLegalStatusSubmit"))
+        self.wait_for_OI3()
+
+    def change_HH1_filter(self):
+        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
+        self.op.click(self.get_element("1stChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("1stChartLegalStatusPending"))
+        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.wait_for_HH1()
+
+    def change_HH2_filter(self):
+        self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
+        self.op.click(self.get_element("2ndChartLegalStatusSelectAll"))
+        self.op.click(self.get_element("2ndChartLegalStatusPending"))
+        self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
+        self.wait_for_HH2()
+
+    def change_QV1_filter(self):
+        self.op.click(self.get_element("1stChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_QV1()
+
+    def change_QV2_filter(self):
+        self.op.click(self.get_element("2ndChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_QV2()
+
+    def change_QV3_filter(self):
+        self.op.click(self.get_element("3rdChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_QV3()
+
+    def change_QH1_filter(self):
+        self.op.click(self.get_element("1stChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_QH1()
+
+    def change_QH2_filter(self):
+        self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
+        self.op.click(self.get_element("2ndChartLegalStatusActive"))
+        self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
+        self.wait_for_QH2()
+
+    def change_VH1_filter(self):
+        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
+        self.op.click(self.get_element("1stChartLegalStatusActive"))
+        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.wait_for_VH1()
+
+    def change_VH2_filter(self):
+        self.op.click(self.get_element("2ndChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_VH2()
+
+    def change_VH3_filter(self):
+        self.op.click(self.get_element("3rdChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
+        self.wait_for_VH3()
+
     def quit(self):
         self.op.quit()
