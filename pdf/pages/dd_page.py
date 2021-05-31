@@ -214,6 +214,7 @@ class DDPage(VirtualPage):
 
             'families': '# of Patent Families in the chart',
             'applications': '# of Applications in the chart',
+            'total': 'Total # of Applications',
 
             'summary': 'Summary'
         }
@@ -225,7 +226,8 @@ class DDPage(VirtualPage):
             'tech_1': 157,
             'tech_2': 195,
             'oi_1': 79,
-            'oi_2': 41,
+            'oi_2_assignees': 206,
+            'oi_2_inventors': 41,
             'oi_3': 197,
             'hh_1': 22,
             'hh_2': 69,
@@ -317,6 +319,7 @@ class DDPage(VirtualPage):
 
     def parse_pdf(self, pdf):
         self.pdf_content = _parse_pdf(pdf)
+        self.pdf_content = self.pdf_content.replace("\n", " ")
         print(self.pdf_content)
 
     def __should_be_equal(self, expect, num):
@@ -331,16 +334,19 @@ class DDPage(VirtualPage):
         else:
             return False
 
-    def __get_section_of_chart(self, chart, size=512):
+    def __get_section_of_chart(self, chart, size=256):
         end = len(self.pdf_content) - 1
         start = self.pdf_content.find(chart)
         if start == -1:
             raise RuntimeError(f'Cannot find {chart} in pdf!')
         else:
+            _start = int(start - size / 2)
             _end = start + size
             if _end > end:
                 _end = end
-            return self.pdf_content[start:_end]
+            if _start < 0:
+                _start = 0
+            return self.pdf_content[_start:_end]
 
     def __get_sentence_in_substring(self, substring, keyword, size=64):
         end = len(substring) - 1
@@ -355,7 +361,6 @@ class DDPage(VirtualPage):
 
     def __get_num_list_from_str(self, string, delimiter):
         tokens = re.split(delimiter, string)
-        print(tokens)
         _list = []
         for token in tokens:
             res = parse_int_from_str(token)
@@ -363,9 +368,17 @@ class DDPage(VirtualPage):
                 _list.append(res)
         return _list
 
+    def __get_first_num_from_str(self, string, delimiter):
+        tokens = re.split(delimiter, string)
+        for token in tokens:
+            res = parse_int_from_str(token)
+            if res is not None:
+                return res
+        raise RuntimeError(f'Cannot get number from {string}')
+
     def validate_pdf(self):
 
-        delimiter = r'[, ()%\n]+'
+        delimiter = r'[,; ()%\n]+'
 
         # cs summary
         cs = self.__get_section_of_chart(self.pdf_fields['cs'], size=4096)
@@ -382,12 +395,131 @@ class DDPage(VirtualPage):
 
         # cs-1
         cs1 = self.__get_section_of_chart(self.pdf_fields['cs_1'])
+        print(f'cs1 = {cs1}')
+        sent = self.__get_sentence_in_substring(cs1, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['cs_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["cs_1"]} but its {num}')
 
         # cs-2
         cs2 = self.__get_section_of_chart(self.pdf_fields['cs_2'])
+        print(f'cs2 = {cs2}')
+        sent = self.__get_sentence_in_substring(cs2, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['cs_2'], num):
+            raise RuntimeError(f'expect number {self.defaults["cs_2"]} but its {num}')
 
         # cs-3
         cs3 = self.__get_section_of_chart(self.pdf_fields['cs_3'])
+        print(f'cs3 = {cs3}')
+        sent = self.__get_sentence_in_substring(cs3, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['cs_3'], num):
+            raise RuntimeError(f'expect number {self.defaults["cs_3"]} but its {num}')
+
+        # tech summary
+        tech = self.__get_section_of_chart(self.pdf_fields['tech'], size=4096)
+        print(f'tech = {tech}')
+        field_1 = self.__get_sentence_in_substring(cs, 'Main technical fields 1', 256)
+        field_2 = self.__get_sentence_in_substring(cs, 'Main technical fields 2', 256)
+        field_3 = self.__get_sentence_in_substring(cs, 'Main technical fields 3', 256)
+        if len(self.__get_num_list_from_str(field_1, delimiter)) < 2:
+            raise RuntimeError(f'expect Main technical field 1 summary but its {field_1}')
+        if len(self.__get_num_list_from_str(field_2, delimiter)) < 2:
+            raise RuntimeError(f'expect Main technical field 2 summary but its {field_2}')
+        if len(self.__get_num_list_from_str(field_3, delimiter)) < 2:
+            raise RuntimeError(f'expect Main technical field 3 summary but its {field_3}')
+
+        # tech-1
+        tech1 = self.__get_section_of_chart(self.pdf_fields['tech_1'])
+        print(f'tech1 = {tech1}')
+        sent = self.__get_sentence_in_substring(tech1, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['tech_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["tech_1"]} but its {num}')
+
+        # tech-2
+        tech2 = self.__get_section_of_chart(self.pdf_fields['tech_2'])
+        print(f'tech2 = {tech2}')
+        sent = self.__get_sentence_in_substring(tech2, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['tech_2'], num):
+            raise RuntimeError(f'expect number {self.defaults["tech_2"]} but its {num}')
+
+        # oi summary
+        oi = self.__get_section_of_chart(self.pdf_fields['oi'], size=4096)
+        print(f'oi = {oi}')
+        co_ownerships = self.__get_sentence_in_substring(oi, 'Co-ownerships')
+        co_applications = self.__get_sentence_in_substring(oi, 'Co-applications')
+        if len(self.__get_num_list_from_str(co_ownerships, delimiter)) < 2:
+            raise RuntimeError(f'expect Co-ownerships summary but its {co_ownerships}')
+        if len(self.__get_num_list_from_str(co_applications, delimiter)) < 2:
+            raise RuntimeError(f'expect Co-applications summary but its {co_applications}')
+
+        # oi-1
+        oi1 = self.__get_section_of_chart(self.pdf_fields['oi_1'])
+        print(f'oi1 = {oi1}')
+        sent = self.__get_sentence_in_substring(oi1, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['oi_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["oi_1"]} but its {num}')
+
+        # oi-2 assignees
+        oi2_assignees = self.__get_section_of_chart(self.pdf_fields['oi_2_assignees'])
+        print(f'oi2_assignees = {oi2_assignees}')
+        sent = self.__get_sentence_in_substring(oi2_assignees, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['oi_2_assignees'], num):
+            raise RuntimeError(f'expect number {self.defaults["oi_2_assignees"]} but its {num}')
+
+        # oi-2 inventors
+        oi2_inventors = self.__get_section_of_chart(self.pdf_fields['oi_2_inventors'])
+        print(f'oi2_inventors = {oi2_inventors}')
+        sent = self.__get_sentence_in_substring(oi2_inventors, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['oi_2_inventors'], num):
+            raise RuntimeError(f'expect number {self.defaults["oi_2_inventors"]} but its {num}')
+
+        # oi-3
+        oi3 = self.__get_section_of_chart(self.pdf_fields['oi_3'])
+        print(f'oi3 = {oi3}')
+        sent = self.__get_sentence_in_substring(oi3, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['oi_3'], num):
+            raise RuntimeError(f'expect number {self.defaults["oi_3"]} but its {num}')
+
+        # hh summary
+        hh = self.__get_section_of_chart(self.pdf_fields['hh'], size=4096)
+        print(f'hh = {hh}')
+        transferred = self.__get_sentence_in_substring(hh, 'Transferred')
+        licensed = self.__get_sentence_in_substring(hh, 'Licensed')
+        pledged = self.__get_sentence_in_substring(hh, 'Pledged')
+        litigated = self.__get_sentence_in_substring(hh, 'Litigated')
+        if len(self.__get_num_list_from_str(transferred, delimiter)) < 2:
+            raise RuntimeError(f'expect Transferred summary but its {transferred}')
+        if len(self.__get_num_list_from_str(licensed, delimiter)) < 2:
+            raise RuntimeError(f'expect Licensed summary but its {licensed}')
+        if len(self.__get_num_list_from_str(pledged, delimiter)) < 2:
+            raise RuntimeError(f'expect Pledged summary but its {pledged}')
+        if len(self.__get_num_list_from_str(litigated, delimiter)) < 2:
+            raise RuntimeError(f'expect Litigated summary but its {litigated}')
+
+        # hh-1
+        hh1 = self.__get_section_of_chart(self.pdf_fields['hh_1'])
+        print(f'hh1 = {hh1}')
+        sent = self.__get_sentence_in_substring(hh1, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['hh_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["hh_1"]} but its {num}')
+
+        # hh-2
+        hh2 = self.__get_section_of_chart(self.pdf_fields['hh_2'])
+        print(f'hh2 = {hh2}')
+        sent = self.__get_sentence_in_substring(hh2, self.pdf_fields['total'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['hh_2'], num):
+            raise RuntimeError(f'expect number {self.defaults["hh_2"]} but its {num}')
+
 
     def wait_for_CS1(self):
         self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))

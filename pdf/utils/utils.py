@@ -34,7 +34,7 @@ def parse_pdf(pdf):
 
 def parse_int_from_str(str):
     try:
-        return int(str)
+        return int(float(str))
     except Exception as e:
         print(f'Cannot parse int from {str}')
         return None
