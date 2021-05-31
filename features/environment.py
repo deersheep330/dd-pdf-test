@@ -6,6 +6,9 @@ from pdf.pages import MainPage, DDPage
 
 def before_all(context):
 
+    main_url = 'https://stage.patentcloud.com/'
+    dd_url = 'https://stage.patentcloud.com/dd'
+
     # browser
     config = ConfigParser()
     config_file = (os.path.join(os.getcwd(), 'setup.cfg'))
@@ -14,9 +17,14 @@ def before_all(context):
     driver = ChromeDriver(is_headless=False).get_driver()
 
     # env
-    print(f'==> Env = {config["Environment"]["Env"]}')
-    main_url = 'https://stage.patentcloud.com/'
-    dd_url = 'https://stage.patentcloud.com/dd'
+    env = config["Environment"]["Env"]
+    print(f'==> Env = {env}')
+    if env == 'Stage':
+        main_url = 'https://stage.patentcloud.com/'
+        dd_url = 'https://stage.patentcloud.com/dd'
+    elif env == 'Production':
+        main_url = 'https://app.patentcloud.com/'
+        dd_url = 'https://app.patentcloud.com/dd'
 
     context.ps_page = MainPage(driver, main_url)
     context.dd_page = DDPage(driver, dd_url)

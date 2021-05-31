@@ -29,5 +29,12 @@ def get_file_count_from_folder(folder):
 def parse_pdf(pdf):
     parsed_pdf = parser.from_file(pdf)
     data = parsed_pdf['content']
-    print(data)
+    return data
 
+
+def parse_int_from_str(str):
+    try:
+        return int(str)
+    except Exception as e:
+        print(f'Cannot parse int from {str}')
+        return None

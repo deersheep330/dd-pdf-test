@@ -7,3 +7,4 @@ Feature: download pdf with default settings
         Then import patents
         Then start analysis
         Then download pdf
+        Then validate pdf

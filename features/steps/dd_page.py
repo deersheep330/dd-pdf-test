@@ -17,3 +17,7 @@ def download_pdf(context):
     context.dd_page.download_pdf()
     pdf_path = context.dd_page.get_downloaded_pdf()
     context.dd_page.parse_pdf(pdf_path)
+
+@then("validate pdf")
+def validate_pdf(context):
+    context.dd_page.validate_pdf()

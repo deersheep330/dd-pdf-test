@@ -1,5 +1,6 @@
 import os
-from pdf.utils import get_latest_file_from_folder, get_file_count_from_folder
+import re
+from pdf.utils import get_latest_file_from_folder, get_file_count_from_folder, parse_int_from_str
 from pdf.utils import parse_pdf as _parse_pdf
 from pdf.virtual_page import VirtualPage
 
@@ -336,24 +337,60 @@ class DDPage(VirtualPage):
         if start == -1:
             raise RuntimeError(f'Cannot find {chart} in pdf!')
         else:
-            _end = start + 100
+            _end = start + 256
             if _end > end:
                 _end = end
             return self.pdf_content[start:_end]
 
-    def __get_sentence_in_substring(self, substring, keyword):
+    def __get_sentence_in_substring(self, substring, keyword, size=64):
         end = len(substring) - 1
-        start = self.pdf_content.find(substring)
+        start = self.substring.find(keyword)
         if start == -1:
-            raise RuntimeError(f'Cannot find {substring} in substring: {substring}!')
+            raise RuntimeError(f'Cannot find {keyword} in substring: {substring}!')
         else:
-            _end = start + 40
+            _end = start + size
             if _end > end:
                 _end = end
             return substring[start:_end]
 
+    def __get_num_list_from_str(self, string, delimiter):
+        tokens = re.split(delimiter, string)
+        print(tokens)
+        _list = []
+        for token in tokens:
+            res = parse_int_from_str(token)
+            if res is not None:
+                _list.append(res)
+        return _list
+
     def validate_pdf(self):
-        pass
+
+        delimiter = ',| |(|)|%'
+
+        # cs summary
+        cs = self.__get_section_of_chart(self.pdf_fields['cs'])
+        print(f'cs = {cs}')
+        active = self.__get_sentence_in_substring(cs, 'Active', 32)
+        print(f'active = {active}')
+        pending = self.__get_sentence_in_substring(cs, 'Pending', 32)
+        inactive = self.__get_sentence_in_substring(cs, 'Inactive', 32)
+        print(f'active = {active}')
+        print(f'list = {self.__get_num_list_from_str(active, delimiter)}')
+        if len(self.__get_num_list_from_str(active, delimiter)) < 2:
+            raise RuntimeError(f'expect active summary but its {active}')
+        if len(self.__get_num_list_from_str(pending, delimiter)) < 2:
+            raise RuntimeError(f'expect pending summary but its {pending}')
+        if len(self.__get_num_list_from_str(inactive, delimiter)) < 2:
+            raise RuntimeError(f'expect inactive summary but its {inactive}')
+
+        # cs-1
+        cs1 = self.__get_section_of_chart(self.pdf_fields['cs-1'])
+
+        # cs-2
+        cs2 = self.__get_section_of_chart(self.pdf_fields['cs-2'])
+
+        # cs-3
+        cs3 = self.__get_section_of_chart(self.pdf_fields['cs-3'])
 
     def wait_for_CS1(self):
         self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
