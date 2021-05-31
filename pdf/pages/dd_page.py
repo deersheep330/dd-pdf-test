@@ -318,6 +318,40 @@ class DDPage(VirtualPage):
         self.pdf_content = _parse_pdf(pdf)
         print(self.pdf_content)
 
+    def __should_be_equal(self, expect, num):
+        if expect * 0.9 < num < expect * 1.1:
+            return True
+        else:
+            return False
+
+    def __should_not_be_equal(self, expect, num):
+        if num < expect * 0.5:
+            return True
+        else:
+            return False
+
+    def __get_section_of_chart(self, chart):
+        end = len(self.pdf_content) - 1
+        start = self.pdf_content.find(chart)
+        if start == -1:
+            raise RuntimeError(f'Cannot find {chart} in pdf!')
+        else:
+            _end = start + 100
+            if _end > end:
+                _end = end
+            return self.pdf_content[start:_end]
+
+    def __get_sentence_in_substring(self, substring, keyword):
+        end = len(substring) - 1
+        start = self.pdf_content.find(substring)
+        if start == -1:
+            raise RuntimeError(f'Cannot find {substring} in substring: {substring}!')
+        else:
+            _end = start + 40
+            if _end > end:
+                _end = end
+            return substring[start:_end]
+
     def validate_pdf(self):
         pass
 
