@@ -259,6 +259,8 @@ class DDPage(VirtualPage):
             'vh_3_family_id': 231
         }
 
+        self.delimiter = r'[,; ()%\n]+'
+
     def navigate(self):
         self.op.navigate_to(self.url)
         self.op.wait_for(self.get_element("DDLogo"))
@@ -394,251 +396,288 @@ class DDPage(VirtualPage):
                 return res
         raise RuntimeError(f'Cannot get number from {string}')
 
-    def validate_pdf(self):
-
-        delimiter = r'[,; ()%\n]+'
-
-        # cs summary
+    def validate_cs_summary(self):
         cs = self.__get_section_of_chart(self.pdf_fields['cs'], size=4096)
         print(f'cs = {cs}')
         active = self.__get_sentence_in_substring(cs, 'Active', 32)
         pending = self.__get_sentence_in_substring(cs, 'Pending', 32)
         inactive = self.__get_sentence_in_substring(cs, 'Inactive', 32)
-        if len(self.__get_num_list_from_str(active, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(active, self.delimiter)) < 2:
             raise RuntimeError(f'expect active summary but its {active}')
-        if len(self.__get_num_list_from_str(pending, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(pending, self.delimiter)) < 2:
             raise RuntimeError(f'expect pending summary but its {pending}')
-        if len(self.__get_num_list_from_str(inactive, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(inactive, self.delimiter)) < 2:
             raise RuntimeError(f'expect inactive summary but its {inactive}')
 
-        # cs-1
+    def validate_cs1(self, filtered=False):
         cs1 = self.__get_section_of_chart(self.pdf_fields['cs_1'])
         print(f'cs1 = {cs1}')
         sent = self.__get_sentence_in_substring(cs1, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['cs_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['cs_1'], num):
             raise RuntimeError(f'expect number {self.defaults["cs_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['cs_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["cs_1"]} but its {num}')
 
-        # cs-2
+    def validate_cs2(self, filtered=False):
         cs2 = self.__get_section_of_chart(self.pdf_fields['cs_2'])
         print(f'cs2 = {cs2}')
         sent = self.__get_sentence_in_substring(cs2, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['cs_2'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['cs_2'], num):
             raise RuntimeError(f'expect number {self.defaults["cs_2"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['cs_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["cs_2"]} but its {num}')
 
-        # cs-3
+    def validate_cs3(self, filtered=False):
         cs3 = self.__get_section_of_chart(self.pdf_fields['cs_3'])
         print(f'cs3 = {cs3}')
         sent = self.__get_sentence_in_substring(cs3, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['cs_3'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['cs_3'], num):
             raise RuntimeError(f'expect number {self.defaults["cs_3"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['cs_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["cs_3"]} but its {num}')
 
-        # tech summary
+    def validate_tech_summary(self):
         tech = self.__get_section_of_chart(self.pdf_fields['tech'], size=4096)
         print(f'tech = {tech}')
-        field_1 = self.__get_sentence_in_substring(cs, 'Main technical fields 1', 256)
-        field_2 = self.__get_sentence_in_substring(cs, 'Main technical fields 2', 256)
-        field_3 = self.__get_sentence_in_substring(cs, 'Main technical fields 3', 256)
-        if len(self.__get_num_list_from_str(field_1, delimiter)) < 2:
+        field_1 = self.__get_sentence_in_substring(tech, 'Main technical fields 1', 256)
+        field_2 = self.__get_sentence_in_substring(tech, 'Main technical fields 2', 256)
+        field_3 = self.__get_sentence_in_substring(tech, 'Main technical fields 3', 256)
+        if len(self.__get_num_list_from_str(field_1, self.delimiter)) < 2:
             raise RuntimeError(f'expect Main technical field 1 summary but its {field_1}')
-        if len(self.__get_num_list_from_str(field_2, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(field_2, self.delimiter)) < 2:
             raise RuntimeError(f'expect Main technical field 2 summary but its {field_2}')
-        if len(self.__get_num_list_from_str(field_3, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(field_3, self.delimiter)) < 2:
             raise RuntimeError(f'expect Main technical field 3 summary but its {field_3}')
 
-        # tech-1
+    def validate_tech1(self, filtered=False):
         tech1 = self.__get_section_of_chart(self.pdf_fields['tech_1'])
         print(f'tech1 = {tech1}')
         sent = self.__get_sentence_in_substring(tech1, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['tech_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['tech_1'], num):
             raise RuntimeError(f'expect number {self.defaults["tech_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['tech_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["tech_1"]} but its {num}')
 
-        # tech-2
+    def validate_tech2(self, filtered=False):
         tech2 = self.__get_section_of_chart(self.pdf_fields['tech_2'])
         print(f'tech2 = {tech2}')
         sent = self.__get_sentence_in_substring(tech2, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['tech_2'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['tech_2'], num):
             raise RuntimeError(f'expect number {self.defaults["tech_2"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['tech_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["tech_2"]} but its {num}')
 
-        # oi summary
+    def validate_oi_summary(self):
         oi = self.__get_section_of_chart(self.pdf_fields['oi'], size=4096)
         print(f'oi = {oi}')
         co_ownerships = self.__get_sentence_in_substring(oi, 'Co-ownerships')
         co_applications = self.__get_sentence_in_substring(oi, 'Co-applications')
-        if len(self.__get_num_list_from_str(co_ownerships, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(co_ownerships, self.delimiter)) < 2:
             raise RuntimeError(f'expect Co-ownerships summary but its {co_ownerships}')
-        if len(self.__get_num_list_from_str(co_applications, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(co_applications, self.delimiter)) < 2:
             raise RuntimeError(f'expect Co-applications summary but its {co_applications}')
 
-        # oi-1
+    def validate_oi1(self, filtered=False):
         oi1 = self.__get_section_of_chart(self.pdf_fields['oi_1'])
         print(f'oi1 = {oi1}')
         sent = self.__get_sentence_in_substring(oi1, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['oi_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['oi_1'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['oi_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["oi_1"]} but its {num}')
 
-        # oi-2 assignees
+    def validate_oi2_assignees(self, filtered=False):
         oi2_assignees = self.__get_section_of_chart(self.pdf_fields['oi_2_assignees'])
         print(f'oi2_assignees = {oi2_assignees}')
         sent = self.__get_sentence_in_substring(oi2_assignees, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['oi_2_assignees'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['oi_2_assignees'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_2_assignees"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['oi_2_assignees'], num):
+            raise RuntimeError(f'expect number != {self.defaults["oi_2_assignees"]} but its {num}')
 
-        # oi-2 inventors
+    def validate_oi2_inventors(self, filtered=False):
         oi2_inventors = self.__get_section_of_chart(self.pdf_fields['oi_2_inventors'])
         print(f'oi2_inventors = {oi2_inventors}')
         sent = self.__get_sentence_in_substring(oi2_inventors, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['oi_2_inventors'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['oi_2_inventors'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_2_inventors"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['oi_2_inventors'], num):
+            raise RuntimeError(f'expect number != {self.defaults["oi_2_inventors"]} but its {num}')
 
-        # oi-3
+    def validate_oi3(self, filtered=False):
         oi3 = self.__get_section_of_chart(self.pdf_fields['oi_3'])
         print(f'oi3 = {oi3}')
         sent = self.__get_sentence_in_substring(oi3, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['oi_3'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['oi_3'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_3"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['oi_3'], num):
+            raise RuntimeError(f'expect number != {self.defaults["oi_3"]} but its {num}')
 
-        # hh summary
+    def validate_hh_summary(self):
         hh = self.__get_section_of_chart(self.pdf_fields['hh'], size=4096)
         print(f'hh = {hh}')
         transferred = self.__get_sentence_in_substring(hh, 'Transferred')
         licensed = self.__get_sentence_in_substring(hh, 'Licensed')
         pledged = self.__get_sentence_in_substring(hh, 'Pledged')
         litigated = self.__get_sentence_in_substring(hh, 'Litigated')
-        if len(self.__get_num_list_from_str(transferred, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(transferred, self.delimiter)) < 2:
             raise RuntimeError(f'expect Transferred summary but its {transferred}')
-        if len(self.__get_num_list_from_str(licensed, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(licensed, self.delimiter)) < 2:
             raise RuntimeError(f'expect Licensed summary but its {licensed}')
-        if len(self.__get_num_list_from_str(pledged, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(pledged, self.delimiter)) < 2:
             raise RuntimeError(f'expect Pledged summary but its {pledged}')
-        if len(self.__get_num_list_from_str(litigated, delimiter)) < 2:
+        if len(self.__get_num_list_from_str(litigated, self.delimiter)) < 2:
             raise RuntimeError(f'expect Litigated summary but its {litigated}')
 
-        # hh-1
+    def validate_hh1(self, filtered=False):
         hh1 = self.__get_section_of_chart(self.pdf_fields['hh_1'])
         print(f'hh1 = {hh1}')
         sent = self.__get_sentence_in_substring(hh1, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['hh_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['hh_1'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['hh_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["hh_1"]} but its {num}')
 
-        # hh-1 transferred
+    def validate_hh1_transferred(self, filtered=False):
         hh1_transferred = self.__get_section_of_chart(self.pdf_fields['hh_1_transferred'])
         print(f'hh1_transferred = {hh1_transferred}')
         sent = self.__get_sentence_in_substring(hh1_transferred, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['hh_1_transferred'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['hh_1_transferred'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_1_transferred"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['hh_1_transferred'], num):
+            raise RuntimeError(f'expect number != {self.defaults["hh_1_transferred"]} but its {num}')
 
-        # hh-2
+    def validate_hh2(self, filtered=False):
         hh2 = self.__get_section_of_chart(self.pdf_fields['hh_2'])
         print(f'hh2 = {hh2}')
         sent = self.__get_sentence_in_substring(hh2, self.pdf_fields['total'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['hh_2'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['hh_2'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_2"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['hh_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["hh_2"]} but its {num}')
 
-        # qv summary
+    def validate_qv_summary(self):
         qv = self.__get_section_of_chart(self.pdf_fields['qv'], size=4096)
         print(f'qv = {qv}')
         qv_summary = self.__get_sentence_in_substring(qv, 'Summary')
-        if len(self.__get_num_list_from_str(qv_summary, delimiter)) < 4:
+        if len(self.__get_num_list_from_str(qv_summary, self.delimiter)) < 4:
             raise RuntimeError(f'expect qv summary but its {qv_summary}')
 
-        # qv-1
+    def validate_qv1(self, filtered=False):
         qv1 = self.__get_section_of_chart(self.pdf_fields['qv_1'])
         print(f'qv1 = {qv1}')
         sent = self.__get_sentence_in_substring(qv1, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['qv_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['qv_1'], num):
             raise RuntimeError(f'expect number {self.defaults["qv_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['qv_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["qv_1"]} but its {num}')
 
-        # qv-2
+    def validate_qv2(self, filtered=False):
         qv2 = self.__get_section_of_chart(self.pdf_fields['qv_2'])
         print(f'qv2 = {qv2}')
         sent = self.__get_sentence_in_substring(qv2, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['qv_2'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['qv_2'], num):
             raise RuntimeError(f'expect number {self.defaults["qv_2"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['qv_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["qv_2"]} but its {num}')
 
-        # qv-3
+    def validate_qv3(self, filtered=False):
         qv3 = self.__get_section_of_chart(self.pdf_fields['qv_3'])
         print(f'qv3 = {qv3}')
         sent = self.__get_sentence_in_substring(qv3, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['qv_3'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['qv_3'], num):
             raise RuntimeError(f'expect number {self.defaults["qv_3"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['qv_3'], num):
+            raise RuntimeError(f'expect number != {self.defaults["qv_3"]} but its {num}')
 
-        # qh summary
+    def validate_qh_summary(self):
         qh = self.__get_section_of_chart(self.pdf_fields['qh'], size=4096)
         print(f'qh = {qh}')
         qh_summary = self.__get_sentence_in_substring(qh, 'Summary')
-        if len(self.__get_num_list_from_str(qh_summary, delimiter)) < 6:
+        if len(self.__get_num_list_from_str(qh_summary, self.delimiter)) < 6:
             raise RuntimeError(f'expect qh summary but its {qh_summary}')
 
-        # qh-1
+    def validate_qh1(self, filtered=False):
         qh1 = self.__get_section_of_chart(self.pdf_fields['qh_1'])
         print(f'qh1 = {qh1}')
         sent = self.__get_sentence_in_substring(qh1, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['qh_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['qh_1'], num):
             raise RuntimeError(f'expect number {self.defaults["qh_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['qh_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["qh_1"]} but its {num}')
 
-        # qh-2
+    def validate_qh2(self, filtered=False):
         qh2 = self.__get_section_of_chart(self.pdf_fields['qh_2'])
         print(f'qh2 = {qh2}')
         sent = self.__get_sentence_in_substring(qh2, self.pdf_fields['applications'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['qh_2'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['qh_2'], num):
             raise RuntimeError(f'expect number {self.defaults["qh_2"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['qh_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["qh_2"]} but its {num}')
 
-        # vh summary
+    def validate_vh_summary(self):
         vh = self.__get_section_of_chart(self.pdf_fields['vh'], size=4096)
         print(f'vh = {vh}')
         vh_summary = self.__get_sentence_in_substring(vh, 'Summary')
-        if len(self.__get_num_list_from_str(vh_summary, delimiter)) < 3:
+        if len(self.__get_num_list_from_str(vh_summary, self.delimiter)) < 3:
             raise RuntimeError(f'expect vh summary but its {vh_summary}')
 
-        # vh-1
+    def validate_vh1(self, filtered=False):
         vh1 = self.__get_section_of_chart(self.pdf_fields['vh_1'])
         print(f'vh1 = {vh1}')
         sent = self.__get_sentence_in_substring(vh1, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['vh_1'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['vh_1'], num):
             raise RuntimeError(f'expect number {self.defaults["vh_1"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['vh_1'], num):
+            raise RuntimeError(f'expect number != {self.defaults["vh_1"]} but its {num}')
 
-        # vh-2
+    def validate_vh2(self, filtered=False):
         vh2 = self.__get_section_of_chart(self.pdf_fields['vh_2'])
         print(f'vh2 = {vh2}')
         sent = self.__get_sentence_in_substring(vh2, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['vh_2'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['vh_2'], num):
             raise RuntimeError(f'expect number {self.defaults["vh_2"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['vh_2'], num):
+            raise RuntimeError(f'expect number != {self.defaults["vh_2"]} but its {num}')
 
-        # vh-3 potential targets
+    def validate_vh3_potential_targets(self, filtered=False):
         vh3_potential_targets = self.__get_section_of_chart(self.pdf_fields['vh_3_potential_targets'])
         print(f'vh3_potential_targets = {vh3_potential_targets}')
         sent = self.__get_sentence_in_substring(vh3_potential_targets, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['vh_3_potential_targets'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['vh_3_potential_targets'], num):
             raise RuntimeError(f'expect number {self.defaults["vh_3_potential_targets"]} but its {num}')
+        elif filtered and not self.__should_not_be_equal(self.defaults['vh_3_potential_targets'], num):
+            raise RuntimeError(f'expect number != {self.defaults["vh_3_potential_targets"]} but its {num}')
 
-        # vh-3 family id
+    def validate_vh3_family_id(self, filtered=False):
         vh3_family_id = self.__get_section_of_chart(self.pdf_fields['vh_3_family_id'])
         print(f'vh3_family_id = {vh3_family_id}')
         sent = self.__get_sentence_in_substring(vh3_family_id, self.pdf_fields['families'])
-        num = self.__get_first_num_from_str(sent, delimiter)
-        if not self.__should_be_equal(self.defaults['vh_3_family_id'], num):
+        num = self.__get_first_num_from_str(sent, self.delimiter)
+        if not filtered and not self.__should_be_equal(self.defaults['vh_3_family_id'], num):
             raise RuntimeError(f'expect number {self.defaults["vh_3_family_id"]} but its {num}')
-
+        elif filtered and not self.__should_not_be_equal(self.defaults['vh_3_family_id'], num):
+            raise RuntimeError(f'expect number != {self.defaults["vh_3_family_id"]} but its {num}')
 
     def wait_for_CS1(self):
         self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
