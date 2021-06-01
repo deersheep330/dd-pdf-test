@@ -90,6 +90,20 @@ class DDPage(VirtualPage):
         self.add_element("VH2", "//div[contains(@class, 'spark-line-chart')]")
         self.add_element("VH3", "//div[contains(@class, 'sankey-chart')]")
 
+        # vh3 tabs
+        self.add_element("VH3PotentialTargetsTab", "//*[@i18n-txt='due.chart.againsttargets']")
+        self.add_element("VH3PotentialTargetsTabActive", "//*[@i18n-txt='due.chart.againsttargets' and contains(@class, 'active')]")
+        self.add_element("VH3FamilyIdTab", "//*[@i18n-txt='export.familyId']")
+        self.add_element("VH3FamilyIdTabActive", "//*[@i18n-txt='export.familyId' and contains(@class, 'active')]")
+
+        # chart numbers
+        self.add_element("FirstChartTotalNumber", "(//*[contains(@class, 'chart__container') or contains(@class, 'chartBlock ')][1]//*[contains(@class, 'main__subtitle')]//*[contains(@class, 'bold')])[1]")
+        self.add_element("SecondCharTotaltNumber", "(//*[contains(@class, 'chart__container') or contains(@class, 'chartBlock ')][2]//*[contains(@class, 'main__subtitle')]//*[contains(@class, 'bold')])[1]")
+        self.add_element("ThirdChartTotalNumber", "(//*[contains(@class, 'chart__container') or contains(@class, 'chartBlock ')][3]//*[contains(@class, 'main__subtitle')]//*[contains(@class, 'bold')])[1]")
+        self.add_element("FirstChartActualNumber", "(//*[contains(@class, 'chart__container') or contains(@class, 'chartBlock ')][1]//*[contains(@class, 'main__subtitle')]//*[contains(@class, 'bold')])[2]")
+        self.add_element("SecondChartActualNumber", "(//*[contains(@class, 'chart__container') or contains(@class, 'chartBlock ')][2]//*[contains(@class, 'main__subtitle')]//*[contains(@class, 'bold')])[2]")
+        self.add_element("ThirdChartActualNumber", "(//*[contains(@class, 'chart__container') or contains(@class, 'chartBlock ')][3]//*[contains(@class, 'main__subtitle')]//*[contains(@class, 'bold')])[2]")
+
         # filter dropdown
         self.add_element("1stChartLegalStatusDropdown", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/button")
         self.add_element("1stChartLegalStatusSelectAll", "(//div[contains(@class, 'dropdown b-dropdown filter-dropdwon')])[1]/ul/div/li[1]/form//*[contains(text(), 'Select All')]")
@@ -196,6 +210,7 @@ class DDPage(VirtualPage):
 
             'hh': 'Historical Highlights',
             'hh_1': 'Transacted Patents',
+            'hh_1_transferred': 'Transacted Patents - Transferred',
             'hh_2': 'Litigated Patents',
 
             'qv': 'Quality and Value',
@@ -210,7 +225,8 @@ class DDPage(VirtualPage):
             'vh': 'Value Highlights',
             'vh_1': 'Potential Targets of the Portfolio',
             'vh_2': 'Filing Dates of Potential Targets in the Relevant Art',
-            'vh_3': 'Patents Against the Potential Targets',
+            'vh_3_potential_targets': 'Ranked by Potential Targets',
+            'vh_3_family_id': 'Ranked by Family in Portfolio (ID)',
 
             'families': '# of Patent Families in the chart',
             'applications': '# of Applications in the chart',
@@ -230,6 +246,7 @@ class DDPage(VirtualPage):
             'oi_2_inventors': 41,
             'oi_3': 197,
             'hh_1': 22,
+            'hh_1_transferred': 21,
             'hh_2': 69,
             'qv_1': 40,
             'qv_2': 42,
@@ -238,7 +255,8 @@ class DDPage(VirtualPage):
             'qh_2': 24,
             'vh_1': 267,
             'vh_2': 267,
-            'vh_3': 267
+            'vh_3_potential_targets': 267,
+            'vh_3_family_id': 231
         }
 
     def navigate(self):
@@ -512,6 +530,14 @@ class DDPage(VirtualPage):
         if not self.__should_be_equal(self.defaults['hh_1'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_1"]} but its {num}')
 
+        # hh-1 transferred
+        hh1_transferred = self.__get_section_of_chart(self.pdf_fields['hh_1_transferred'])
+        print(f'hh1_transferred = {hh1_transferred}')
+        sent = self.__get_sentence_in_substring(hh1_transferred, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['hh_1_transferred'], num):
+            raise RuntimeError(f'expect number {self.defaults["hh_1_transferred"]} but its {num}')
+
         # hh-2
         hh2 = self.__get_section_of_chart(self.pdf_fields['hh_2'])
         print(f'hh2 = {hh2}')
@@ -519,6 +545,99 @@ class DDPage(VirtualPage):
         num = self.__get_first_num_from_str(sent, delimiter)
         if not self.__should_be_equal(self.defaults['hh_2'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_2"]} but its {num}')
+
+        # qv summary
+        qv = self.__get_section_of_chart(self.pdf_fields['qv'], size=4096)
+        print(f'qv = {qv}')
+        qv_summary = self.__get_sentence_in_substring(qv, 'Summary')
+        if len(self.__get_num_list_from_str(qv_summary, delimiter)) < 4:
+            raise RuntimeError(f'expect qv summary but its {qv_summary}')
+
+        # qv-1
+        qv1 = self.__get_section_of_chart(self.pdf_fields['qv_1'])
+        print(f'qv1 = {qv1}')
+        sent = self.__get_sentence_in_substring(qv1, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['qv_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["qv_1"]} but its {num}')
+
+        # qv-2
+        qv2 = self.__get_section_of_chart(self.pdf_fields['qv_2'])
+        print(f'qv2 = {qv2}')
+        sent = self.__get_sentence_in_substring(qv2, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['qv_2'], num):
+            raise RuntimeError(f'expect number {self.defaults["qv_2"]} but its {num}')
+
+        # qv-3
+        qv3 = self.__get_section_of_chart(self.pdf_fields['qv_3'])
+        print(f'qv3 = {qv3}')
+        sent = self.__get_sentence_in_substring(qv3, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['qv_3'], num):
+            raise RuntimeError(f'expect number {self.defaults["qv_3"]} but its {num}')
+
+        # qh summary
+        qh = self.__get_section_of_chart(self.pdf_fields['qh'], size=4096)
+        print(f'qh = {qh}')
+        qh_summary = self.__get_sentence_in_substring(qh, 'Summary')
+        if len(self.__get_num_list_from_str(qh_summary, delimiter)) < 6:
+            raise RuntimeError(f'expect qh summary but its {qh_summary}')
+
+        # qh-1
+        qh1 = self.__get_section_of_chart(self.pdf_fields['qh_1'])
+        print(f'qh1 = {qh1}')
+        sent = self.__get_sentence_in_substring(qh1, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['qh_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["qh_1"]} but its {num}')
+
+        # qh-2
+        qh2 = self.__get_section_of_chart(self.pdf_fields['qh_2'])
+        print(f'qh2 = {qh2}')
+        sent = self.__get_sentence_in_substring(qh2, self.pdf_fields['applications'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['qh_2'], num):
+            raise RuntimeError(f'expect number {self.defaults["qh_2"]} but its {num}')
+
+        # vh summary
+        vh = self.__get_section_of_chart(self.pdf_fields['vh'], size=4096)
+        print(f'vh = {vh}')
+        vh_summary = self.__get_sentence_in_substring(vh, 'Summary')
+        if len(self.__get_num_list_from_str(vh_summary, delimiter)) < 3:
+            raise RuntimeError(f'expect vh summary but its {vh_summary}')
+
+        # vh-1
+        vh1 = self.__get_section_of_chart(self.pdf_fields['vh_1'])
+        print(f'vh1 = {vh1}')
+        sent = self.__get_sentence_in_substring(vh1, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['vh_1'], num):
+            raise RuntimeError(f'expect number {self.defaults["vh_1"]} but its {num}')
+
+        # vh-2
+        vh2 = self.__get_section_of_chart(self.pdf_fields['vh_2'])
+        print(f'vh2 = {vh2}')
+        sent = self.__get_sentence_in_substring(vh2, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['vh_2'], num):
+            raise RuntimeError(f'expect number {self.defaults["vh_2"]} but its {num}')
+
+        # vh-3 potential targets
+        vh3_potential_targets = self.__get_section_of_chart(self.pdf_fields['vh_3_potential_targets'])
+        print(f'vh3_potential_targets = {vh3_potential_targets}')
+        sent = self.__get_sentence_in_substring(vh3_potential_targets, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['vh_3_potential_targets'], num):
+            raise RuntimeError(f'expect number {self.defaults["vh_3_potential_targets"]} but its {num}')
+
+        # vh-3 family id
+        vh3_family_id = self.__get_section_of_chart(self.pdf_fields['vh_3_family_id'])
+        print(f'vh3_family_id = {vh3_family_id}')
+        sent = self.__get_sentence_in_substring(vh3_family_id, self.pdf_fields['families'])
+        num = self.__get_first_num_from_str(sent, delimiter)
+        if not self.__should_be_equal(self.defaults['vh_3_family_id'], num):
+            raise RuntimeError(f'expect number {self.defaults["vh_3_family_id"]} but its {num}')
 
 
     def wait_for_CS1(self):
