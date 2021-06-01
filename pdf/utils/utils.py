@@ -1,6 +1,7 @@
 from configparser import ConfigParser
 import glob
 import os
+import shutil
 from tika import parser
 
 
@@ -24,6 +25,18 @@ def get_latest_file_from_folder(folder):
 
 def get_file_count_from_folder(folder):
     return len([name for name in os.listdir(folder) if os.path.isfile(os.path.join(folder, name))])
+
+
+def remove_all_files_in_folder(folder):
+    for filename in os.listdir(folder):
+        file_path = os.path.join(folder, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')
 
 
 def parse_pdf(pdf):
