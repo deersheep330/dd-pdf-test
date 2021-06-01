@@ -342,6 +342,12 @@ class DDPage(VirtualPage):
         self.pdf_content = self.pdf_content.replace("\n", " ")
         print(self.pdf_content)
 
+    def is_pdf_downloaded(self):
+        if self.pdf_content == '':
+            return False
+        else:
+            return True
+
     def __should_be_equal(self, expect, num):
         if expect * 0.9 < num < expect * 1.1:
             return True
@@ -398,8 +404,8 @@ class DDPage(VirtualPage):
 
     def validate_cs_summary(self):
         cs = self.__get_section_of_chart(self.pdf_fields['cs'], size=4096)
-        print(f'cs = {cs}')
         active = self.__get_sentence_in_substring(cs, 'Active', 32)
+        print(f'active = {active}')
         pending = self.__get_sentence_in_substring(cs, 'Pending', 32)
         inactive = self.__get_sentence_in_substring(cs, 'Inactive', 32)
         if len(self.__get_num_list_from_str(active, self.delimiter)) < 2:
@@ -441,8 +447,8 @@ class DDPage(VirtualPage):
 
     def validate_tech_summary(self):
         tech = self.__get_section_of_chart(self.pdf_fields['tech'], size=4096)
-        print(f'tech = {tech}')
         field_1 = self.__get_sentence_in_substring(tech, 'Main technical fields 1', 256)
+        print(f'field_1 = {field_1}')
         field_2 = self.__get_sentence_in_substring(tech, 'Main technical fields 2', 256)
         field_3 = self.__get_sentence_in_substring(tech, 'Main technical fields 3', 256)
         if len(self.__get_num_list_from_str(field_1, self.delimiter)) < 2:
@@ -474,8 +480,8 @@ class DDPage(VirtualPage):
 
     def validate_oi_summary(self):
         oi = self.__get_section_of_chart(self.pdf_fields['oi'], size=4096)
-        print(f'oi = {oi}')
         co_ownerships = self.__get_sentence_in_substring(oi, 'Co-ownerships')
+        print(f'co_ownerships = {co_ownerships}')
         co_applications = self.__get_sentence_in_substring(oi, 'Co-applications')
         if len(self.__get_num_list_from_str(co_ownerships, self.delimiter)) < 2:
             raise RuntimeError(f'expect Co-ownerships summary but its {co_ownerships}')
@@ -524,8 +530,8 @@ class DDPage(VirtualPage):
 
     def validate_hh_summary(self):
         hh = self.__get_section_of_chart(self.pdf_fields['hh'], size=4096)
-        print(f'hh = {hh}')
         transferred = self.__get_sentence_in_substring(hh, 'Transferred')
+        print(f'transferred = {transferred}')
         licensed = self.__get_sentence_in_substring(hh, 'Licensed')
         pledged = self.__get_sentence_in_substring(hh, 'Pledged')
         litigated = self.__get_sentence_in_substring(hh, 'Litigated')
@@ -570,8 +576,8 @@ class DDPage(VirtualPage):
 
     def validate_qv_summary(self):
         qv = self.__get_section_of_chart(self.pdf_fields['qv'], size=4096)
-        print(f'qv = {qv}')
-        qv_summary = self.__get_sentence_in_substring(qv, 'Summary')
+        qv_summary = self.__get_sentence_in_substring(qv, 'MANICURING OR OTHER COSMETIC TREATMENT', 256)
+        print(f'qv_summary = {qv_summary}')
         if len(self.__get_num_list_from_str(qv_summary, self.delimiter)) < 4:
             raise RuntimeError(f'expect qv summary but its {qv_summary}')
 
@@ -607,8 +613,8 @@ class DDPage(VirtualPage):
 
     def validate_qh_summary(self):
         qh = self.__get_section_of_chart(self.pdf_fields['qh'], size=4096)
-        print(f'qh = {qh}')
-        qh_summary = self.__get_sentence_in_substring(qh, 'Summary')
+        qh_summary = self.__get_sentence_in_substring(qh, 'Summary', 512)
+        print(f'qh_summary = {qh_summary}')
         if len(self.__get_num_list_from_str(qh_summary, self.delimiter)) < 6:
             raise RuntimeError(f'expect qh summary but its {qh_summary}')
 
@@ -634,8 +640,8 @@ class DDPage(VirtualPage):
 
     def validate_vh_summary(self):
         vh = self.__get_section_of_chart(self.pdf_fields['vh'], size=4096)
-        print(f'vh = {vh}')
         vh_summary = self.__get_sentence_in_substring(vh, 'Summary')
+        print(f'vh_summary = {vh_summary}')
         if len(self.__get_num_list_from_str(vh_summary, self.delimiter)) < 3:
             raise RuntimeError(f'expect vh summary but its {vh_summary}')
 
@@ -650,7 +656,7 @@ class DDPage(VirtualPage):
             raise RuntimeError(f'expect number != {self.defaults["vh_1"]} but its {num}')
 
     def validate_vh2(self, filtered=False):
-        vh2 = self.__get_section_of_chart(self.pdf_fields['vh_2'])
+        vh2 = self.__get_section_of_chart(self.pdf_fields['vh_2'], 512)
         print(f'vh2 = {vh2}')
         sent = self.__get_sentence_in_substring(vh2, self.pdf_fields['families'])
         num = self.__get_first_num_from_str(sent, self.delimiter)
@@ -660,7 +666,7 @@ class DDPage(VirtualPage):
             raise RuntimeError(f'expect number != {self.defaults["vh_2"]} but its {num}')
 
     def validate_vh3_potential_targets(self, filtered=False):
-        vh3_potential_targets = self.__get_section_of_chart(self.pdf_fields['vh_3_potential_targets'])
+        vh3_potential_targets = self.__get_section_of_chart(self.pdf_fields['vh_3_potential_targets'], 512)
         print(f'vh3_potential_targets = {vh3_potential_targets}')
         sent = self.__get_sentence_in_substring(vh3_potential_targets, self.pdf_fields['families'])
         num = self.__get_first_num_from_str(sent, self.delimiter)
@@ -670,7 +676,7 @@ class DDPage(VirtualPage):
             raise RuntimeError(f'expect number != {self.defaults["vh_3_potential_targets"]} but its {num}')
 
     def validate_vh3_family_id(self, filtered=False):
-        vh3_family_id = self.__get_section_of_chart(self.pdf_fields['vh_3_family_id'])
+        vh3_family_id = self.__get_section_of_chart(self.pdf_fields['vh_3_family_id'], 512)
         print(f'vh3_family_id = {vh3_family_id}')
         sent = self.__get_sentence_in_substring(vh3_family_id, self.pdf_fields['families'])
         num = self.__get_first_num_from_str(sent, self.delimiter)

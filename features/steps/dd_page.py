@@ -2,21 +2,35 @@ from behave import *
 
 @then("navigate to dd page")
 def navigate_to_dd_page(context):
+    if context.dd_page.is_pdf_downloaded():
+        return
     context.dd_page.navigate()
 
 @then("import patents")
 def import_patents(context):
+    if context.dd_page.is_pdf_downloaded():
+        return
     context.dd_page.upload_file()
 
 @then("start analysis")
 def start_analysis(context):
+    if context.dd_page.is_pdf_downloaded():
+        return
     context.dd_page.start_analysis()
 
 @then("download pdf")
 def download_pdf(context):
+    if context.dd_page.is_pdf_downloaded():
+        return
     context.dd_page.download_pdf()
     pdf_path = context.dd_page.get_downloaded_pdf()
     context.dd_page.parse_pdf(pdf_path)
+
+@given("on pdf downloaded")
+def on_pdf_downloaded(context):
+    is_downloaded = context.dd_page.is_pdf_downloaded()
+    if not is_downloaded:
+        raise RuntimeError('pdf content not found!')
 
 @then("validate cs summary")
 def validate_cs_summary(context):
