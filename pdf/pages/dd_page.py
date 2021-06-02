@@ -53,6 +53,8 @@ class DDPage(VirtualPage):
 
         self.add_element("StartAnalysis", "//*[@i18n-txt='due.button.startanalytics']")
 
+        self.add_element("PatentTableClose", "//*[contains(@class, 'chartTableContainer') or (contains(@class, 'table-collapse-container') and contains(@class, 'is-shown'))]//*[contains(@class, 'close')]//*[contains(@class, 'fa-times')]")
+
         # tabs
         self.add_element("CSTab", "//span[@i18n-txt='due.page.coveragestatus']")
         self.add_element("TECHTab", "//span[@i18n-txt='due.page.technology']")
@@ -89,6 +91,9 @@ class DDPage(VirtualPage):
         self.add_element("VH1", "(//div[contains(@class, 'invest-target-chart')])[1]")
         self.add_element("VH2", "//div[contains(@class, 'spark-line-chart')]")
         self.add_element("VH3", "//div[contains(@class, 'sankey-chart')]")
+
+        # hh1
+        self.add_element("ElementInHH1", "//*[@id='hh_1']/div/*[name()='svg']/*[name()='g' and @class='highcharts-series-group']/*[name()='g'][1]/*[name()='rect'][1]")
 
         # vh3 tabs
         self.add_element("VH3PotentialTargetsTab", "//*[@i18n-txt='due.chart.againsttargets']")
@@ -130,11 +135,13 @@ class DDPage(VirtualPage):
         self.add_element("1stChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[1]")
         self.add_element("2ndChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[2]")
         self.add_element("3rdChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[3]")
+        self.add_element("FilterForwardCitations", "//*[contains(@class, 'chart-detail-filter-block')]//*[contains(text(), 'Forward Citations')]")
         self.add_element("FilterSubmit", "//button[@i18n-txt='due.button.submit']")
         self.add_element("FilterCancel", "//button[@i18n-txt='due.button.cancel']")
         self.add_element("FilterClear", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[contains(text(), 'lear')]")
         self.add_element("FilterCN", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[@i18n-txt='name.cn']")
         self.add_element("FilterEP", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[@i18n-txt='name.ep']")
+        self.add_element("FilterWO", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[@i18n-txt='name.wo']")
 
         # count by
         self.add_element("1stChartCountByButton", "(//div[contains(@i18n-txt, 'due.unit.')])[1]")
@@ -147,6 +154,8 @@ class DDPage(VirtualPage):
         # select data
         self.add_element("TECH1SelectData", "//div[contains(@class,'technical-field')]//*[name()='svg' and contains(@class, 'fa-cog')]")
         self.add_element("TECH2SelectData", "//div[contains(@class,'stream-graph')]//*[name()='svg' and contains(@class, 'fa-cog')]")
+        self.add_element("TECH2SelectDataDropdown", "//select[contains(@class, 'custom-select')]")
+        # value = Class, Subclass, Group, Subgroup
         self.add_element("OI2SelectData", "//div[contains(@class, 'spark-line-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
         self.add_element("OI2SelectDataInventors", "//span[@i18n-txt='due.chart.inventor']")
         self.add_element("OI2SelectDataApplicants", "//span[@i18n-txt='due.chart.applicant']")
@@ -156,6 +165,20 @@ class DDPage(VirtualPage):
         self.add_element("VH2SelectData", "//div[contains(@class,'spark-line-chart')]//*[name()='svg' and contains(@class, 'fa-cog')]")
         self.add_element("VH3FamilyIdSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[1]")
         self.add_element("VH3PotentialTargetSelectData", "(//div[contains(@class,'sankey-chart')]//i[@class='fal fa-cog'])[2]")
+
+        self.add_element("SelectDataSubmit", "//*[contains(@class, 'modal')]//*[@i18n-txt='due.button.submit']")
+        self.add_element("SelectDataCancel", "//*[contains(@class, 'modal')]//*[@i18n-txt='due.button.cancel']")
+
+        self.add_element("1stElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[1]")
+        self.add_element("2ndElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[2]")
+        self.add_element("3rdElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[3]")
+        self.add_element("4thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[4]")
+        self.add_element("5thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[5]")
+        self.add_element("6thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[6]")
+        self.add_element("7thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[7]")
+        self.add_element("8thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[8]")
+        self.add_element("9thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[9]")
+        self.add_element("10thElementInSelectData", "(//*[contains(@class, 'checkbox__list') or contains(@class, 'select-body')]//label)[10]")
 
         # download pdf
         self.add_element("DownloadPdf", "//*[contains(@i18n-txt, 'due.page.downloadreport')]//*[name()='svg' and contains(@class, 'fa-file-download')]")
@@ -928,9 +951,159 @@ class DDPage(VirtualPage):
 
     def change_vh3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
+        self.op.click(self.get_element("FilterForwardCitations"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterEP"))
+        self.op.click(self.get_element("FilterWO"))
         self.op.click(self.get_element("FilterSubmit"))
+        self.op.sleep(2)
+        self.wait_for_vh3()
+
+    def change_tech1_select_data(self):
+        self.op.click(self.get_element("TECH1SelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_tech1()
+
+    def change_tech2_class_select_data(self):
+        self.op.click(self.get_element("TECH2SelectData"))
+        self.op.select_dropdown_option_by_value(self.get_element("TECH2SelectDataDropdown"), "Class")
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_tech2()
+
+    def change_tech2_subclass_select_data(self):
+        self.op.click(self.get_element("TECH2SelectData"))
+        self.op.select_dropdown_option_by_value(self.get_element("TECH2SelectDataDropdown"), "Subclass")
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_tech2()
+
+    def change_tech2_group_select_data(self):
+        self.op.click(self.get_element("TECH2SelectData"))
+        self.op.select_dropdown_option_by_value(self.get_element("TECH2SelectDataDropdown"), "Group")
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_tech2()
+
+    def change_tech2_subgroup_select_data(self):
+        self.op.click(self.get_element("TECH2SelectData"))
+        self.op.select_dropdown_option_by_value(self.get_element("TECH2SelectDataDropdown"), "Subgroup")
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_tech2()
+
+    def change_oi2_inventors_select_data(self):
+        self.op.click(self.get_element("OI2SelectData"))
+        self.op.click(self.get_element("OI2SelectDataInventors"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_oi2()
+
+    def change_oi2_applicants_select_data(self):
+        self.op.click(self.get_element("OI2SelectData"))
+        self.op.click(self.get_element("OI2SelectDataApplicants"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_oi2()
+
+    def change_oi3_select_data(self):
+        self.op.click(self.get_element("OI3SelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_oi3()
+
+    def change_hh1_select_data(self):
+        self.op.click_and_wait_for(self.get_element("ElementInHH1"), self.get_element("HH1SelectData"))
+        self.op.click(self.get_element("HH1SelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.op.click(self.get_element("PatentTableClose"))
+
+    def change_vh1_select_data(self):
+        self.op.click(self.get_element("VH1SelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_vh1()
+
+    def change_vh2_select_data(self):
+        self.op.click(self.get_element("VH2SelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_vh2()
+
+    def change_vh3_potential_targets_select_data(self):
+        self.op.click(self.get_element("VH3PotentialTargetSelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
+        self.op.sleep(2)
+        self.wait_for_vh3()
+
+    def change_vh3_family_id_select_data(self):
+        self.op.click(self.get_element("VH3FamilyIdSelectData"))
+        self.op.click(self.get_element("1stElementInSelectData"))
+        self.op.click(self.get_element("2ndElementInSelectData"))
+        self.op.click(self.get_element("3rdElementInSelectData"))
+        self.op.click(self.get_element("4thElementInSelectData"))
+        self.op.click(self.get_element("5thElementInSelectData"))
+        self.op.click(self.get_element("SelectDataSubmit"))
         self.op.sleep(2)
         self.wait_for_vh3()
 
