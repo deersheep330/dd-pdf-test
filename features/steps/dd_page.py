@@ -194,7 +194,7 @@ def download_qv1_pdf(context):
 
 @then("download qv2 pdf")
 def download_qv2_pdf(context):
-    context.dd_page.download_customized_pdf("qv2")
+    context.dd_page.download_customized_pdf("QV2")
     pdf_path = context.dd_page.get_downloaded_pdf()
     context.dd_page.parse_pdf(pdf_path)
 

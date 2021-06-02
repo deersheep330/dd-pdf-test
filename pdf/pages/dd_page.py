@@ -86,7 +86,7 @@ class DDPage(VirtualPage):
         self.add_element("QV3", "//div[contains(@id, 'negitiveChart')]")
         self.add_element("QH1", "//div[@id='QH-1-chart']")
         self.add_element("QH2", "//div[@id='QH-2-chart']")
-        self.add_element("VH1", "//div[contains(@class, 'invest-target-chart')]")
+        self.add_element("VH1", "(//div[contains(@class, 'invest-target-chart')])[1]")
         self.add_element("VH2", "//div[contains(@class, 'spark-line-chart')]")
         self.add_element("VH3", "//div[contains(@class, 'sankey-chart')]")
 
@@ -134,6 +134,7 @@ class DDPage(VirtualPage):
         self.add_element("FilterCancel", "//button[@i18n-txt='due.button.cancel']")
         self.add_element("FilterClear", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[contains(text(), 'lear')]")
         self.add_element("FilterCN", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[@i18n-txt='name.cn']")
+        self.add_element("FilterEP", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[@i18n-txt='name.ep']")
 
         # count by
         self.add_element("1stChartCountByButton", "(//div[contains(@i18n-txt, 'due.unit.')])[1]")
@@ -262,6 +263,7 @@ class DDPage(VirtualPage):
         }
 
         self.delimiter = r'[,; ()%\n]+'
+        self.wait_for_timeout = 30
 
     def navigate(self):
         self.op.navigate_to(self.url)
@@ -337,11 +339,11 @@ class DDPage(VirtualPage):
         max_retry = 20
         sleep_time = 3
         while retry < max_retry:
+            self.op.sleep(sleep_time)
             current_file_count = get_file_count_from_folder(download_path)
             if current_file_count > orig_file_count:
                 return
             else:
-                self.op.sleep(sleep_time)
                 retry += 1
         raise RuntimeError('download pdf failed')
 
@@ -700,92 +702,92 @@ class DDPage(VirtualPage):
     def wait_for_cs1(self):
         if not self.op.is_exist(self.get_element("CS1Title")):
             self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
-        self.op.wait_for(self.get_element("CS1"))
+        self.op.wait_for(self.get_element("CS1"), self.wait_for_timeout)
 
     def wait_for_cs2(self):
         if not self.op.is_exist(self.get_element("CS1Title")):
             self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
-        self.op.wait_for(self.get_element("CS2"))
+        self.op.wait_for(self.get_element("CS2"), self.wait_for_timeout)
 
     def wait_for_cs3(self):
         if not self.op.is_exist(self.get_element("CS1Title")):
             self.op.click_and_wait_for(self.get_element("CSTab"), self.get_element("CS1Title"))
-        self.op.wait_for(self.get_element("CS3"))
+        self.op.wait_for(self.get_element("CS3"), self.wait_for_timeout)
 
     def wait_for_tech1(self):
         if not self.op.is_exist(self.get_element("TECH1Title")):
             self.op.click_and_wait_for(self.get_element("TECHTab"), self.get_element("TECH1Title"))
-        self.op.wait_for(self.get_element("TECH1"))
+        self.op.wait_for(self.get_element("TECH1"), self.wait_for_timeout)
 
     def wait_for_tech2(self):
         if not self.op.is_exist(self.get_element("TECH1Title")):
             self.op.click_and_wait_for(self.get_element("TECHTab"), self.get_element("TECH1Title"))
-        self.op.wait_for(self.get_element("TECH2"))
+        self.op.wait_for(self.get_element("TECH2"), self.wait_for_timeout)
 
     def wait_for_oi1(self):
         if not self.op.is_exist(self.get_element("OI1Title")):
             self.op.click_and_wait_for(self.get_element("OITab"), self.get_element("OI1Title"))
-        self.op.wait_for(self.get_element("OI1"))
+        self.op.wait_for(self.get_element("OI1"), self.wait_for_timeout)
 
     def wait_for_oi2(self):
         if not self.op.is_exist(self.get_element("OI1Title")):
             self.op.click_and_wait_for(self.get_element("OITab"), self.get_element("OI1Title"))
-        self.op.wait_for(self.get_element("OI2"))
+        self.op.wait_for(self.get_element("OI2"), self.wait_for_timeout)
 
     def wait_for_oi3(self):
         if not self.op.is_exist(self.get_element("OI1Title")):
             self.op.click_and_wait_for(self.get_element("OITab"), self.get_element("OI1Title"))
-        self.op.wait_for(self.get_element("OI3"))
+        self.op.wait_for(self.get_element("OI3"), self.wait_for_timeout)
 
     def wait_for_hh1(self):
         if not self.op.is_exist(self.get_element("HH2Title")):
             self.op.click_and_wait_for(self.get_element("HHTab"), self.get_element("HH2Title"))
-        self.op.wait_for(self.get_element("HH1"))
+        self.op.wait_for(self.get_element("HH1"), self.wait_for_timeout)
 
     def wait_for_hh2(self):
         if not self.op.is_exist(self.get_element("HH2Title")):
             self.op.click_and_wait_for(self.get_element("HHTab"), self.get_element("HH2Title"))
-        self.op.wait_for(self.get_element("HH2"))
+        self.op.wait_for(self.get_element("HH2"), self.wait_for_timeout)
 
     def wait_for_qv1(self):
         if not self.op.is_exist(self.get_element("QV2Title")):
             self.op.click_and_wait_for(self.get_element("QVTab"), self.get_element("QV2Title"))
-        self.op.wait_for(self.get_element("QV1"))
+        self.op.wait_for(self.get_element("QV1"), self.wait_for_timeout)
 
     def wait_for_qv2(self):
         if not self.op.is_exist(self.get_element("QV2Title")):
             self.op.click_and_wait_for(self.get_element("QVTab"), self.get_element("QV2Title"))
-        self.op.wait_for(self.get_element("QV2"))
+        self.op.wait_for(self.get_element("QV2"), self.wait_for_timeout)
 
     def wait_for_qv3(self):
         if not self.op.is_exist(self.get_element("QV2Title")):
             self.op.click_and_wait_for(self.get_element("QVTab"), self.get_element("QV2Title"))
-        self.op.wait_for(self.get_element("QV3"))
+        self.op.wait_for(self.get_element("QV3"), self.wait_for_timeout)
 
     def wait_for_qh1(self):
         if not self.op.is_exist(self.get_element("QH2Title")):
             self.op.click_and_wait_for(self.get_element("QHTab"), self.get_element("QH2Title"))
-        self.op.wait_for(self.get_element("QH1"))
+        self.op.wait_for(self.get_element("QH1"), self.wait_for_timeout)
 
     def wait_for_qh2(self):
         if not self.op.is_exist(self.get_element("QH2Title")):
             self.op.click_and_wait_for(self.get_element("QHTab"), self.get_element("QH2Title"))
-        self.op.wait_for(self.get_element("QH2"))
+        self.op.wait_for(self.get_element("QH2"), self.wait_for_timeout)
 
     def wait_for_vh1(self):
         if not self.op.is_exist(self.get_element("VH1Title")):
             self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
-        self.op.wait_for(self.get_element("VH1"))
+        self.op.wait_for(self.get_element("VH1"), self.wait_for_timeout)
 
     def wait_for_vh2(self):
         if not self.op.is_exist(self.get_element("VH1Title")):
             self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
-        self.op.wait_for(self.get_element("VH2"))
+        self.op.wait_for(self.get_element("VH2"), self.wait_for_timeout)
 
     def wait_for_vh3(self):
         if not self.op.is_exist(self.get_element("VH1Title")):
             self.op.click_and_wait_for(self.get_element("VHTab"), self.get_element("VH1Title"))
-        self.op.wait_for(self.get_element("VH3"))
+        self.op.wait_for(self.get_element("VH3"), self.wait_for_timeout)
 
     def vh3_switch_to_family_id_tab(self):
         self.op.click_and_wait_for(self.get_element("VH3FamilyIdTab"), self.get_element("VH3FamilyIdTabActive"))
@@ -797,20 +799,23 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_cs1()
 
     def change_cs2_filter(self):
         self.op.click(self.get_element("2ndChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_cs2()
 
     def change_cs3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_cs3()
 
     def change_tech1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
@@ -818,6 +823,7 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_tech1()
 
     def change_tech2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
@@ -825,6 +831,7 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("2ndChartLegalStatusPending"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_tech2()
 
     def change_oi1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
@@ -832,6 +839,7 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_oi1()
 
     def change_oi2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
@@ -839,6 +847,7 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("2ndChartLegalStatusPending"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_oi2()
 
     def change_oi3_filter(self):
         self.op.click(self.get_element("3rdChartLegalStatusDropdown"))
@@ -846,74 +855,84 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("3rdChartLegalStatusPending"))
         self.op.click(self.get_element("3rdChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_oi3()
 
     def change_hh1_filter(self):
-        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
-        self.op.click(self.get_element("1stChartLegalStatusSelectAll"))
-        self.op.click(self.get_element("1stChartLegalStatusPending"))
-        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.op.click(self.get_element("1stChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_hh1()
 
     def change_hh2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
         self.op.click(self.get_element("2ndChartLegalStatusSelectAll"))
-        self.op.click(self.get_element("2ndChartLegalStatusPending"))
+        self.op.click(self.get_element("2ndChartLegalStatusActive"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_hh2()
 
     def change_qv1_filter(self):
         self.op.click(self.get_element("1stChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_qv1()
 
     def change_qv2_filter(self):
         self.op.click(self.get_element("2ndChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_qv2()
 
     def change_qv3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
-        self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_qv3()
 
     def change_qh1_filter(self):
         self.op.click(self.get_element("1stChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_qh1()
 
     def change_qh2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
         self.op.click(self.get_element("2ndChartLegalStatusActive"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_qh2()
 
     def change_vh1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
         self.op.click(self.get_element("1stChartLegalStatusActive"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
+        self.wait_for_vh1()
 
     def change_vh2_filter(self):
         self.op.click(self.get_element("2ndChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_vh2()
 
     def change_vh3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
         self.op.click(self.get_element("FilterClear"))
-        self.op.click(self.get_element("FilterCN"))
+        self.op.click(self.get_element("FilterEP"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
+        self.wait_for_vh3()
 
     def quit(self):
         self.op.quit()
