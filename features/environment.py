@@ -35,6 +35,8 @@ def before_feature(context, feature):
         context.is_background_met = context.dd_page.is_pdf_downloaded
     elif "filter" in feature.filename:
         context.is_background_met = context.dd_page.is_on_workspace
+    elif "select_data" in feature.filename:
+        context.is_background_met = context.dd_page.is_on_workspace
 
 
 def after_all(context):

@@ -505,9 +505,13 @@ class DDPage(VirtualPage):
         elif filtered and not self.__should_not_be_equal(self.defaults['tech_1'], num):
             raise RuntimeError(f'expect number != {self.defaults["tech_1"]} but its {num}')
 
-    def validate_tech2(self, filtered=False):
+    def validate_tech2(self, filtered=False, chart_type='Subclass'):
         tech2 = self.__get_section_of_chart(self.pdf_fields['tech_2'])
         print(f'tech2 = {tech2}')
+
+        if chart_type not in tech2:
+            raise RuntimeError(f'expect {chart_type} chart')
+
         sent = self.__get_sentence_in_substring(tech2, self.pdf_fields['families'])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['tech_2'], num):
