@@ -80,7 +80,7 @@ class DDPage(VirtualPage):
         self.add_element("OI2", "//div[contains(@class, 'spark-line-chart')]")
         self.add_element("OI3", "//div[contains(@class, 'owner-inventor-chart')]")
         self.add_element("HH1", "//div[@id='hh_1']")
-        self.add_element("HH2", "//div[@id='MultiColorBarChart']")
+        self.add_element("HH2", "//div[@id='HH-3']")
         self.add_element("QV1", "//div[contains(@class, 'family-size-bubble-chart')]")
         self.add_element("QV2", "//div[@id='bubbleChart']")
         self.add_element("QV3", "//div[contains(@id, 'negitiveChart')]")
