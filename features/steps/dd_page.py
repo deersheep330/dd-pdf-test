@@ -110,6 +110,10 @@ def wait_for_vh2(context):
 def wait_for_vh3(context):
     context.dd_page.wait_for_vh3()
 
+@then("vh3 switch to family id tab")
+def vh3_switch_to_family_id_tab(context):
+    context.dd_page.vh3_switch_to_family_id_tab()
+
 @then("download cs1 pdf")
 def download_cs1_pdf(context):
     context.dd_page.download_customized_pdf("CS1")
@@ -221,6 +225,24 @@ def download_vh1_quantity_pdf(context):
 @then("download vh1 percentage pdf")
 def download_vh1_percentage_pdf(context):
     context.dd_page.download_customized_pdf("VH1_Percentage")
+    pdf_path = context.dd_page.get_downloaded_pdf()
+    context.dd_page.parse_pdf(pdf_path)
+
+@then("download vh2 pdf")
+def download_vh2_pdf(context):
+    context.dd_page.download_customized_pdf("VH2")
+    pdf_path = context.dd_page.get_downloaded_pdf()
+    context.dd_page.parse_pdf(pdf_path)
+
+@then("download vh3 potential targets pdf")
+def download_vh3_potential_targets_pdf(context):
+    context.dd_page.download_customized_pdf("VH3_Potential")
+    pdf_path = context.dd_page.get_downloaded_pdf()
+    context.dd_page.parse_pdf(pdf_path)
+
+@then("download vh3 family id pdf")
+def download_vh3_family_id_pdf(context):
+    context.dd_page.download_customized_pdf("VH3_Family")
     pdf_path = context.dd_page.get_downloaded_pdf()
     context.dd_page.parse_pdf(pdf_path)
 

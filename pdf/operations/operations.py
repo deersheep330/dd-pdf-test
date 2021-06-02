@@ -310,6 +310,13 @@ class Operations():
     def get_default_tab_handle(self):
         return self.default_handle
 
+    def is_alert_exist(self):
+        try:
+            WebDriverWait(self.driver, 1).until(expected_conditions.alert_is_present(), 'wait for alert timeout')
+            return True
+        except Exception as e:
+            pass
+
     def click_alert_ok(self):
         self.driver.switch_to.alert.accept()
 
@@ -338,7 +345,7 @@ class Operations():
                             response = params['response']
                             if 'url' in response:
                                 url = response['url']
-                                print(f'{url}')
+                                #print(f'{url}')
                                 if keyword in url:
                                     print(f'==> get response for {url}')
                                     return

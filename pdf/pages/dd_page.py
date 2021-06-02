@@ -131,8 +131,9 @@ class DDPage(VirtualPage):
         self.add_element("2ndChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[2]")
         self.add_element("3rdChartFilterButton", "(//span[@i18n-txt='due.chartcommon.filter'])[3]")
         self.add_element("FilterSubmit", "//button[@i18n-txt='due.button.submit']")
+        self.add_element("FilterCancel", "//button[@i18n-txt='due.button.cancel']")
         self.add_element("FilterClear", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[contains(text(), 'lear')]")
-        self.add_element("FilterCN", "//*[@i18n-txt='name.cn']")
+        self.add_element("FilterCN", "//*[contains(@class, 'filter')]//*[contains(@class, 'show')]//*[@i18n-txt='name.cn']")
 
         # count by
         self.add_element("1stChartCountByButton", "(//div[contains(@i18n-txt, 'due.unit.')])[1]")
@@ -292,7 +293,11 @@ class DDPage(VirtualPage):
         self.op.click_and_wait_for(self.get_element("StartAnalysis"), self.get_element("CSTab"))
 
     def is_on_workspace(self):
-        if self.op.is_exist(self.get_element("CSTab")):
+        if self.op.is_alert_exist():
+            self.op.click_alert_ok()
+        elif self.op.is_exist(self.get_element("FilterCancel")):
+            self.op.click_and_wait_until_disappear(self.get_element("FilterCancel"), self.get_element("FilterCancel"))
+        elif self.op.is_exist(self.get_element("CSTab")):
             return True
         else:
             return False
@@ -792,7 +797,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_cs1()
 
     def change_cs2_filter(self):
         self.op.click(self.get_element("2ndChartFilterButton"))
@@ -800,7 +804,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_cs2()
 
     def change_cs3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
@@ -808,7 +811,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_cs3()
 
     def change_tech1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
@@ -816,7 +818,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_tech1()
 
     def change_tech2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
@@ -824,7 +825,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("2ndChartLegalStatusPending"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_tech2()
 
     def change_oi1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
@@ -832,7 +832,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_oi1()
 
     def change_oi2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
@@ -840,7 +839,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("2ndChartLegalStatusPending"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_oi2()
 
     def change_oi3_filter(self):
         self.op.click(self.get_element("3rdChartLegalStatusDropdown"))
@@ -848,7 +846,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("3rdChartLegalStatusPending"))
         self.op.click(self.get_element("3rdChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_oi3()
 
     def change_hh1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
@@ -856,7 +853,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("1stChartLegalStatusPending"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_hh1()
 
     def change_hh2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
@@ -864,7 +860,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("2ndChartLegalStatusPending"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_hh2()
 
     def change_qv1_filter(self):
         self.op.click(self.get_element("1stChartFilterButton"))
@@ -872,7 +867,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_qv1()
 
     def change_qv2_filter(self):
         self.op.click(self.get_element("2ndChartFilterButton"))
@@ -880,7 +874,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_qv2()
 
     def change_qv3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
@@ -888,7 +881,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_qv3()
 
     def change_qh1_filter(self):
         self.op.click(self.get_element("1stChartFilterButton"))
@@ -896,21 +888,18 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_qh1()
 
     def change_qh2_filter(self):
         self.op.click(self.get_element("2ndChartLegalStatusDropdown"))
         self.op.click(self.get_element("2ndChartLegalStatusActive"))
         self.op.click(self.get_element("2ndChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_qh2()
 
     def change_vh1_filter(self):
         self.op.click(self.get_element("1stChartLegalStatusDropdown"))
         self.op.click(self.get_element("1stChartLegalStatusActive"))
         self.op.click(self.get_element("1stChartLegalStatusSubmit"))
         self.op.sleep(2)
-        self.wait_for_vh1()
 
     def change_vh2_filter(self):
         self.op.click(self.get_element("2ndChartFilterButton"))
@@ -918,7 +907,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_vh2()
 
     def change_vh3_filter(self):
         self.op.click(self.get_element("3rdChartFilterButton"))
@@ -926,7 +914,6 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("FilterCN"))
         self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
-        self.wait_for_vh3()
 
     def quit(self):
         self.op.quit()
