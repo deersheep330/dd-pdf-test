@@ -458,6 +458,38 @@ def validate_customized_vh3_potential_targets(context):
 def validate_customized_vh3_family_id(context):
     context.dd_page.validate_vh3_family_id(True)
 
+@then("validate customized oi1 families")
+def validate_customized_oi1_families(context):
+    context.dd_page.validate_oi1(True, count_by='families')
+
+@then("validate customized oi2 assignees families")
+def validate_customized_oi2_assignees_families(context):
+    context.dd_page.validate_oi2_assignees(True, count_by='families')
+
+@then("validate customized oi2 inventors families")
+def validate_customized_oi2_inventors_families(context):
+    context.dd_page.validate_oi2_inventors(True, count_by='families')
+
+@then("validate customized oi3 families")
+def validate_customized_oi3_families(context):
+    context.dd_page.validate_oi3(True, count_by='families')
+
+@then("validate customized hh1 families")
+def validate_customized_hh1_families(context):
+    context.dd_page.validate_hh1(True, count_by='families')
+
+@then("validate customized hh1 transferred families")
+def validate_customized_hh1_transferred_families(context):
+    context.dd_page.validate_hh1_transferred(True, count_by='families')
+
+@then("validate customized hh2 families")
+def validate_customized_hh2_families(context):
+    context.dd_page.validate_hh2(True, count_by='families')
+
+@then("validate customized qh2 families")
+def validate_customized_qh2_families(context):
+    context.dd_page.validate_qh2(True, count_by='families')
+
 @then("change cs1 filter")
 def change_cs1_filter(context):
     context.dd_page.change_cs1_filter()
@@ -581,3 +613,27 @@ def change_vh3_potential_targets_select_data(context):
 @then("change vh3 family id select data")
 def change_vh3_family_id_select_data(context):
     context.dd_page.change_vh3_family_id_select_data()
+
+@then("change oi1 count by families")
+def change_oi1_count_by_families(context):
+    context.dd_page.change_oi1_count_by_families()
+
+@then("change oi2 count by families")
+def change_oi2_count_by_families(context):
+    context.dd_page.change_oi2_count_by_families()
+
+@then("change oi3 count by families")
+def change_oi3_count_by_families(context):
+    context.dd_page.change_oi3_count_by_families()
+
+@then("change hh1 count by families")
+def change_hh1_count_by_families(context):
+    context.dd_page.change_hh1_count_by_families()
+
+@then("change hh2 count by families")
+def change_hh2_count_by_families(context):
+    context.dd_page.change_hh2_count_by_families()
+
+@then("change qh2 count by families")
+def change_qh2_count_by_families(context):
+    context.dd_page.change_qh2_count_by_families()

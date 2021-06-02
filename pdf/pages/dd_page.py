@@ -256,7 +256,7 @@ class DDPage(VirtualPage):
 
             'families': '# of Patent Families in the chart',
             'applications': '# of Applications in the chart',
-            'total': 'Total # of Applications',
+            'total': 'Total # of ',
 
             'summary': 'Summary'
         }
@@ -529,40 +529,40 @@ class DDPage(VirtualPage):
         if len(self.__get_num_list_from_str(co_applications, self.delimiter)) < 2:
             raise RuntimeError(f'expect Co-applications summary but its {co_applications}')
 
-    def validate_oi1(self, filtered=False):
+    def validate_oi1(self, filtered=False, count_by='applications'):
         oi1 = self.__get_section_of_chart(self.pdf_fields['oi_1'])
         print(f'oi1 = {oi1}')
-        sent = self.__get_sentence_in_substring(oi1, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(oi1, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['oi_1'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_1"]} but its {num}')
         elif filtered and not self.__should_not_be_equal(self.defaults['oi_1'], num):
             raise RuntimeError(f'expect number != {self.defaults["oi_1"]} but its {num}')
 
-    def validate_oi2_assignees(self, filtered=False):
+    def validate_oi2_assignees(self, filtered=False, count_by='applications'):
         oi2_assignees = self.__get_section_of_chart(self.pdf_fields['oi_2_assignees'])
         print(f'oi2_assignees = {oi2_assignees}')
-        sent = self.__get_sentence_in_substring(oi2_assignees, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(oi2_assignees, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['oi_2_assignees'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_2_assignees"]} but its {num}')
         elif filtered and not self.__should_not_be_equal(self.defaults['oi_2_assignees'], num):
             raise RuntimeError(f'expect number != {self.defaults["oi_2_assignees"]} but its {num}')
 
-    def validate_oi2_inventors(self, filtered=False):
+    def validate_oi2_inventors(self, filtered=False, count_by='applications'):
         oi2_inventors = self.__get_section_of_chart(self.pdf_fields['oi_2_inventors'])
         print(f'oi2_inventors = {oi2_inventors}')
-        sent = self.__get_sentence_in_substring(oi2_inventors, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(oi2_inventors, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['oi_2_inventors'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_2_inventors"]} but its {num}')
         elif filtered and not self.__should_not_be_equal(self.defaults['oi_2_inventors'], num):
             raise RuntimeError(f'expect number != {self.defaults["oi_2_inventors"]} but its {num}')
 
-    def validate_oi3(self, filtered=False):
+    def validate_oi3(self, filtered=False, count_by='applications'):
         oi3 = self.__get_section_of_chart(self.pdf_fields['oi_3'])
         print(f'oi3 = {oi3}')
-        sent = self.__get_sentence_in_substring(oi3, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(oi3, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['oi_3'], num):
             raise RuntimeError(f'expect number {self.defaults["oi_3"]} but its {num}')
@@ -585,27 +585,27 @@ class DDPage(VirtualPage):
         if len(self.__get_num_list_from_str(litigated, self.delimiter)) < 2:
             raise RuntimeError(f'expect Litigated summary but its {litigated}')
 
-    def validate_hh1(self, filtered=False):
+    def validate_hh1(self, filtered=False, count_by='applications'):
         hh1 = self.__get_section_of_chart(self.pdf_fields['hh_1'])
         print(f'hh1 = {hh1}')
-        sent = self.__get_sentence_in_substring(hh1, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(hh1, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['hh_1'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_1"]} but its {num}')
         elif filtered and not self.__should_not_be_equal(self.defaults['hh_1'], num):
             raise RuntimeError(f'expect number != {self.defaults["hh_1"]} but its {num}')
 
-    def validate_hh1_transferred(self, filtered=False):
+    def validate_hh1_transferred(self, filtered=False, count_by='applications'):
         hh1_transferred = self.__get_section_of_chart(self.pdf_fields['hh_1_transferred'])
         print(f'hh1_transferred = {hh1_transferred}')
-        sent = self.__get_sentence_in_substring(hh1_transferred, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(hh1_transferred, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['hh_1_transferred'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_1_transferred"]} but its {num}')
         elif filtered and not self.__should_not_be_equal(self.defaults['hh_1_transferred'], num):
             raise RuntimeError(f'expect number != {self.defaults["hh_1_transferred"]} but its {num}')
 
-    def validate_hh2(self, filtered=False):
+    def validate_hh2(self, filtered=False, count_by='total'):
         hh2 = self.__get_section_of_chart(self.pdf_fields['hh_2'])
         print(f'hh2 = {hh2}')
         sent = self.__get_sentence_in_substring(hh2, self.pdf_fields['total'])
@@ -669,10 +669,10 @@ class DDPage(VirtualPage):
         elif filtered and not self.__should_not_be_equal(self.defaults['qh_1'], num):
             raise RuntimeError(f'expect number != {self.defaults["qh_1"]} but its {num}')
 
-    def validate_qh2(self, filtered=False):
+    def validate_qh2(self, filtered=False, count_by='applications'):
         qh2 = self.__get_section_of_chart(self.pdf_fields['qh_2'])
         print(f'qh2 = {qh2}')
-        sent = self.__get_sentence_in_substring(qh2, self.pdf_fields['applications'])
+        sent = self.__get_sentence_in_substring(qh2, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['qh_2'], num):
             raise RuntimeError(f'expect number {self.defaults["qh_2"]} but its {num}')
@@ -1154,6 +1154,42 @@ class DDPage(VirtualPage):
         self.op.click(self.get_element("SelectDataSubmit"))
         self.op.sleep(2)
         self.wait_for_vh3()
+
+    def change_oi1_count_by_families(self):
+        self.op.click_and_wait_for(self.get_element("1stChartCountByButton"), self.get_element("1stChartCountByFamily"))
+        self.op.click(self.get_element("1stChartCountByFamily"))
+        self.op.sleep(2)
+        self.wait_for_oi1()
+
+    def change_oi2_count_by_families(self):
+        self.op.click_and_wait_for(self.get_element("2ndChartCountByButton"), self.get_element("2ndChartCountByFamily"))
+        self.op.click(self.get_element("2ndChartCountByFamily"))
+        self.op.sleep(2)
+        self.wait_for_oi2()
+
+    def change_oi3_count_by_families(self):
+        self.op.click_and_wait_for(self.get_element("3rdChartCountByButton"), self.get_element("3rdChartCountByFamily"))
+        self.op.click(self.get_element("3rdChartCountByFamily"))
+        self.op.sleep(2)
+        self.wait_for_oi3()
+
+    def change_hh1_count_by_families(self):
+        self.op.click_and_wait_for(self.get_element("1stChartCountByButton"), self.get_element("1stChartCountByFamily"))
+        self.op.click(self.get_element("1stChartCountByFamily"))
+        self.op.sleep(2)
+        self.wait_for_hh1()
+
+    def change_hh2_count_by_families(self):
+        self.op.click_and_wait_for(self.get_element("2ndChartCountByButton"), self.get_element("2ndChartCountByFamily"))
+        self.op.click(self.get_element("2ndChartCountByFamily"))
+        self.op.sleep(2)
+        self.wait_for_hh2()
+
+    def change_qh2_count_by_families(self):
+        self.op.click_and_wait_for(self.get_element("2ndChartCountByButton"), self.get_element("2ndChartCountByFamily"))
+        self.op.click(self.get_element("2ndChartCountByFamily"))
+        self.op.sleep(2)
+        self.wait_for_qh2()
 
     def quit(self):
         self.op.quit()
