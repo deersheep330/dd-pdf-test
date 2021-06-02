@@ -378,6 +378,22 @@ def validate_customized_tech1(context):
 def validate_customized_tech2(context):
     context.dd_page.validate_tech2(True)
 
+@then("validate customized tech2 class")
+def validate_customized_tech2_class(context):
+    context.dd_page.validate_tech2(True, 'Class')
+
+@then("validate customized tech2 subclass")
+def validate_customized_tech2_subclass(context):
+    context.dd_page.validate_tech2(True, 'Subclass')
+
+@then("validate customized tech2 group")
+def validate_customized_tech2_group(context):
+    context.dd_page.validate_tech2(True, 'Group')
+
+@then("validate customized tech2 subgroup")
+def validate_customized_tech2_subgroup(context):
+    context.dd_page.validate_tech2(True, 'Subgroup')
+
 @then("validate customized oi1")
 def validate_customized_oi1(context):
     context.dd_page.validate_oi1(True)
@@ -513,3 +529,55 @@ def change_vh2_filter(context):
 @then("change vh3 filter")
 def change_vh3_filter(context):
     context.dd_page.change_vh3_filter()
+
+@then("change tech1 select data")
+def change_tech1_select_data(context):
+    context.dd_page.change_tech1_select_data()
+
+@then("change tech2 class select data")
+def change_tech2_class_select_data(context):
+    context.dd_page.change_tech2_class_select_data()
+
+@then("change tech2 subclass select data")
+def change_tech2_subclass_select_data(context):
+    context.dd_page.change_tech2_subclass_select_data()
+
+@then("change tech2 group select data")
+def change_tech2_group_select_data(context):
+    context.dd_page.change_tech2_group_select_data()
+
+@then("change tech2 subgroup select data")
+def change_tech2_subgroup_select_data(context):
+    context.dd_page.change_tech2_subgroup_select_data()
+
+@then("change oi2 inventors select data")
+def change_oi2_inventors_select_data(context):
+    context.dd_page.change_oi2_inventors_select_data()
+
+@then("change oi2 applicants select data")
+def change_oi2_applicants_select_data(context):
+    context.dd_page.change_oi2_applicants_select_data()
+
+@then("change oi3 select data")
+def change_oi3_select_data(context):
+    context.dd_page.change_oi3_select_data()
+
+@then("change hh1 select data")
+def change_hh1_select_data(context):
+    context.dd_page.change_hh1_select_data()
+
+@then("change vh1 select data")
+def change_vh1_select_data(context):
+    context.dd_page.change_vh1_select_data()
+
+@then("change vh2 select data")
+def change_vh2_select_data(context):
+    context.dd_page.change_vh2_select_data()
+
+@then("change vh3 potential targets select data")
+def change_vh3_potential_targets_select_data(context):
+    context.dd_page.change_vh3_potential_targets_select_data()
+
+@then("change vh3 family id select data")
+def change_vh3_family_id_select_data(context):
+    context.dd_page.change_vh3_family_id_select_data()
