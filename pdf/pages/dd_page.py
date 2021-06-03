@@ -392,7 +392,7 @@ class DDPage(VirtualPage):
             return False
 
     def __should_not_be_equal(self, expect, num):
-        if num < expect * 0.5:
+        if num < expect * 0.66:
             return True
         else:
             return False

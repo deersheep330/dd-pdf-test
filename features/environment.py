@@ -2,9 +2,16 @@ import os
 from configparser import ConfigParser
 from pdf.webdriver import ChromeDriver
 from pdf.pages import MainPage, DDPage
+from pdf.utils import remove_all_files_in_folder
 
 
 def before_all(context):
+    download_path = os.path.join(os.getcwd(), 'downloads')
+    remove_all_files_in_folder(download_path)
+    print(f'remove all files in {download_path} ...')
+
+
+def before_feature(context, feature):
 
     main_url = 'https://stage.patentcloud.com/'
     dd_url = 'https://stage.patentcloud.com/dd'
@@ -29,8 +36,6 @@ def before_all(context):
     context.ps_page = MainPage(driver, main_url)
     context.dd_page = DDPage(driver, dd_url)
 
-
-def before_feature(context, feature):
     if "default" in feature.filename:
         context.is_background_met = context.dd_page.is_pdf_downloaded
     elif "filter" in feature.filename:
@@ -41,5 +46,5 @@ def before_feature(context, feature):
         context.is_background_met = context.dd_page.is_on_workspace
 
 
-def after_all(context):
+def after_feature(context, feature):
     context.dd_page.quit()
