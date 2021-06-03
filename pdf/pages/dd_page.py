@@ -286,7 +286,7 @@ class DDPage(VirtualPage):
         }
 
         self.delimiter = r'[,; ()%\n]+'
-        self.wait_for_timeout = 30
+        self.wait_for_timeout = 60
 
     def navigate(self):
         self.op.navigate_to(self.url)
