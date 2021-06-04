@@ -605,10 +605,10 @@ class DDPage(VirtualPage):
         elif filtered and not self.__should_not_be_equal(self.defaults['hh_1_transferred'], num):
             raise RuntimeError(f'expect number != {self.defaults["hh_1_transferred"]} but its {num}')
 
-    def validate_hh2(self, filtered=False, count_by='total'):
+    def validate_hh2(self, filtered=False, count_by='applications'):
         hh2 = self.__get_section_of_chart(self.pdf_fields['hh_2'])
         print(f'hh2 = {hh2}')
-        sent = self.__get_sentence_in_substring(hh2, self.pdf_fields['total'])
+        sent = self.__get_sentence_in_substring(hh2, self.pdf_fields[count_by])
         num = self.__get_first_num_from_str(sent, self.delimiter)
         if not filtered and not self.__should_be_equal(self.defaults['hh_2'], num):
             raise RuntimeError(f'expect number {self.defaults["hh_2"]} but its {num}')
@@ -617,7 +617,7 @@ class DDPage(VirtualPage):
 
     def validate_qv_summary(self):
         qv = self.__get_section_of_chart(self.pdf_fields['qv'], size=4096)
-        qv_summary = self.__get_sentence_in_substring(qv, 'MANICURING OR OTHER COSMETIC TREATMENT', 256)
+        qv_summary = self.__get_sentence_in_substring(qv, 'Summary', 256)
         print(f'qv_summary = {qv_summary}')
         if len(self.__get_num_list_from_str(qv_summary, self.delimiter)) < 4:
             raise RuntimeError(f'expect qv summary but its {qv_summary}')
