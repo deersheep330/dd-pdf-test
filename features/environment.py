@@ -6,9 +6,18 @@ from pdf.utils import remove_all_files_in_folder
 
 
 def before_all(context):
+
     download_path = os.path.join(os.getcwd(), 'downloads')
     remove_all_files_in_folder(download_path)
     print(f'remove all files in {download_path} ...')
+
+    screenshots_path = os.path.join(os.getcwd(), 'screenshots')
+    if not os.path.exists(screenshots_path):
+        os.makedirs(screenshots_path)
+        print(f'create {screenshots_path} ...')
+    else:
+        remove_all_files_in_folder(screenshots_path)
+        print(f'remove all files in {screenshots_path} ...')
 
 
 def before_feature(context, feature):
@@ -48,3 +57,11 @@ def before_feature(context, feature):
 
 def after_feature(context, feature):
     context.dd_page.quit()
+
+
+def after_step(context, step):
+    if step.status == 'failed':
+        _condition = f'{context.scenario.name} - {step.name}'
+        print(f'{_condition} failed!')
+        screenshot = os.path.join(os.getcwd(), 'screenshots', _condition + '.png')
+        context.dd_page.driver.get_screenshot_as_file(screenshot)
