@@ -939,9 +939,10 @@ class DDPage(VirtualPage):
         self.wait_for_qh2()
 
     def change_vh1_filter(self):
-        self.op.click(self.get_element("1stChartLegalStatusDropdown"))
-        self.op.click(self.get_element("1stChartLegalStatusActive"))
-        self.op.click(self.get_element("1stChartLegalStatusSubmit"))
+        self.op.click(self.get_element("1stChartFilterButton"))
+        self.op.click(self.get_element("FilterClear"))
+        self.op.click(self.get_element("FilterEP"))
+        self.op.click(self.get_element("FilterSubmit"))
         self.op.sleep(2)
         self.wait_for_vh1()
 
