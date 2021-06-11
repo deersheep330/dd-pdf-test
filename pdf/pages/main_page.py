@@ -13,7 +13,7 @@ class MainPage(VirtualPage):
         self.add_element("LoginButton", "(//*[@i18n-txt='login' or @i18n-txt='system.login'])[1]")
         self.add_element("LoginEmail", "//*[contains(@id, 'login') and not(contains(@style, 'none'))]//input[@id='signName']")
         self.add_element("LoginPassword", "//*[contains(@id, 'login') and not(contains(@style, 'none'))]//input[@id='signPass']")
-        self.add_element("LoginSubmit", "//*[contains(@id, 'login') and not(contains(@style, 'none'))]//*[@i18n-txt='system.login']")
+        self.add_element("LoginSubmit", "//*[contains(@id, 'login') and not(contains(@style, 'none'))]//*[@i18n-txt='system.login' or @vue-i18n-txt='system.login']")
         self.add_element("UserIcon", "//*[contains(@class, 'user-name-represent') or contains(@class, 'header-user-name')]")
 
     def navigate(self):
