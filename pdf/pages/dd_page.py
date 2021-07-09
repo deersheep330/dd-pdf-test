@@ -265,8 +265,8 @@ class DDPage(VirtualPage):
             'cs_1': 234,
             'cs_2': 44,
             'cs_3': 29,
-            'tech_1': 162,
-            'tech_2': 199,
+            'tech_1': 142,
+            'tech_2': 179,
             'oi_1': 79,
             'oi_2_assignees': 210,
             'oi_2_inventors': 41,
@@ -277,12 +277,12 @@ class DDPage(VirtualPage):
             'qv_1': 44,
             'qv_2': 46,
             'qv_3': 46,
-            'qh_1': 16,
+            'qh_1': 18,
             'qh_2': 28,
-            'vh_1': 269,
-            'vh_2': 269,
-            'vh_3_potential_targets': 269,
-            'vh_3_family_id': 233
+            'vh_1': 24,
+            'vh_2': 24,
+            'vh_3_potential_targets': 24,
+            'vh_3_family_id': 20
         }
 
         self.delimiter = r'[,; ()%\n]+'
